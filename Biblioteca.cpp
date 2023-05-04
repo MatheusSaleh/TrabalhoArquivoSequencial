@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
@@ -100,6 +101,49 @@ void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros){
         cin.ignore();
         cout << "Digite a data do ultimo emprestimo: ";
         gets(vetorDeLivros[cont].data_ultimo_emprestimo);
+    }
+}
+
+void insercaoNaTabelaDePessoas(Pessoas vPessoaInicial[], Pessoas vPessoaTemporario[], Pessoas vPessoaAtualizado[], int quantidadeDePessoasInicial, int quantidadeDePessoasTemporario, int quantidadeDePessoasAtualizado){
+    int contPessoaInicial = 0;
+    int contPessoaTemporario = 0;
+    int contPessoaAtualizado = 0;
+    while((contPessoaInicial < quantidadeDePessoasInicial) && (contPessoaTemporario < quantidadeDePessoasTemporario)){
+        if(vPessoaInicial[contPessoaInicial].codigo < vPessoaTemporario[contPessoaTemporario].codigo){
+            vPessoaAtualizado[contPessoaAtualizado].codigo = vPessoaInicial[contPessoaInicial].codigo;
+            strcpy(vPessoaAtualizado[contPessoaAtualizado].nome, vPessoaInicial[contPessoaInicial].nome);
+            strcpy(vPessoaAtualizado[contPessoaAtualizado].endereco, vPessoaInicial[contPessoaInicial].endereco);
+            contPessoaInicial++;
+        }else{
+            vPessoaAtualizado[contPessoaAtualizado].codigo = vPessoaTemporario[contPessoaTemporario].codigo;
+            strcpy(vPessoaAtualizado[contPessoaAtualizado].nome, vPessoaTemporario[contPessoaTemporario].nome);
+            strcpy(vPessoaAtualizado[contPessoaAtualizado].endereco, vPessoaTemporario[contPessoaTemporario].endereco);
+            contPessoaTemporario++;
+        }
+        contPessoaAtualizado++;
+    }
+
+    while(contPessoaInicial < quantidadeDePessoasInicial){
+        vPessoaAtualizado[contPessoaAtualizado].codigo = vPessoaInicial[contPessoaInicial].codigo;
+        strcpy(vPessoaAtualizado[contPessoaAtualizado].nome, vPessoaInicial[contPessoaInicial].nome);
+        strcpy(vPessoaAtualizado[contPessoaAtualizado].endereco, vPessoaInicial[contPessoaInicial].endereco);
+        contPessoaInicial++;
+        contPessoaAtualizado++;
+    }
+
+    while(contPessoaTemporario < quantidadeDePessoasTemporario){
+        vPessoaAtualizado[contPessoaAtualizado].codigo = vPessoaTemporario[contPessoaTemporario].codigo;
+        strcpy(vPessoaAtualizado[contPessoaAtualizado].nome, vPessoaTemporario[contPessoaTemporario].nome);
+        strcpy(vPessoaAtualizado[contPessoaAtualizado].endereco, vPessoaTemporario[contPessoaTemporario].endereco);
+        contPessoaTemporario++;
+        contPessoaAtualizado++;
+    }
+
+    cout << "--- LISTA DEPOIS DA INSERCAO ---" << endl;
+    for(int cont = 0; cont < quantidadeDePessoasAtualizado; cont++){
+        cout << "Codigo: " << vPessoaAtualizado[cont].codigo << endl;
+        cout << "Nome: " << vPessoaAtualizado[cont].nome << endl;
+        cout << "Endereco: " << vPessoaAtualizado[cont].endereco << endl;
     }
 }
 
