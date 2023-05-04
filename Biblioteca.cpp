@@ -13,6 +13,11 @@ struct Editoras{
     char nome[40];
 };
 
+struct Autores{
+    int codigo;
+    char nome[40];
+};
+
 struct Generos{
     int codigo;
     char descricao[40];
@@ -29,7 +34,84 @@ struct Livros{
     char data_ultimo_emprestimo[30];
 };
 
+void leituraDePessoas(Pessoas vetorDePessoas[], int quantidadeDePessoas){
+    for(int cont = 0; cont < quantidadeDePessoas; cont++){
+            cout << "Digite o codigo da Pessoa: ";
+            cin >> vetorDePessoas[cont].codigo;
+            cin.ignore();
+            cout << "Digite o nome da Pessoa: ";
+            gets(vetorDePessoas[cont].nome);
+            cout << "Digite o endereco da Pessoa: ";
+            gets(vetorDePessoas[cont].endereco);
+    }
+}
+
+void leituraDeEditoras(Editoras vetorDeEditoras[], int quantidadeDeEditoras){
+    for(int cont = 0; cont < quantidadeDeEditoras; cont++){
+        cout << "Digite o codigo da editora: ";
+        cin >> vetorDeEditoras[cont].codigo;
+        cin.ignore();
+        cout << "Digite o nome da editora: ";
+        gets(vetorDeEditoras[cont].nome);
+    }
+}
+
+void leituraDeAutores(Autores vetorDeAutores[], int quantidadeDeAutores){
+    for(int cont = 0; cont < quantidadeDeAutores; cont++){
+        cout << "Digite o codigo do autor: ";
+        cin >> vetorDeAutores[cont].codigo;
+        cin.ignore();
+        cout << "Digite o nome do autor: ";
+        gets(vetorDeAutores[cont].nome);
+    }
+}
+
+void leituraDeGeneros(Generos vetorDeGeneros[], int quantidadeDeGeneros){
+    for(int cont = 0; cont < quantidadeDeGeneros; cont++){
+        cout << "Digite o codigo do genero: ";
+        cin >> vetorDeGeneros[cont].codigo;
+        cin.ignore();
+        cout << "Digite a descricao do genero: ";
+        gets(vetorDeGeneros[cont].descricao);
+    }
+}
+
+void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros){
+    for(int cont = 0; cont < quantidadeDeLivros; cont++){
+        cout << "Digite o codigo do livro: ";
+        cin >> vetorDeLivros[cont].codigo;
+        cin.ignore();
+        cout << "Digite o nome do livro: ";
+        gets(vetorDeLivros[cont].nome);
+        cout << "Digite o codigo da editora: ";
+        cin >> vetorDeLivros[cont].codigo_editora;
+        cin.ignore();
+        cout << "Digite o codigo do autor: ";
+        cin >> vetorDeLivros[cont].codigo_autor;
+        cin.ignore();
+        cout << "Digite o codigo do genero: ";
+        cin >> vetorDeLivros[cont].codigo_genero;
+        cin.ignore();
+        cout << "Digite o codigo da pessoa que emprestou o livro: ";
+        cin >> vetorDeLivros[cont].codigo_pessoa_emprestado;
+        cin.ignore();
+        cout << "Digite a quantidade emprestada: ";
+        cin >> vetorDeLivros[cont].qtde_emprestada;
+        cin.ignore();
+        cout << "Digite a data do ultimo emprestimo: ";
+        gets(vetorDeLivros[cont].data_ultimo_emprestimo);
+    }
+}
+
+//OBS: TESTAR AS FUNÇÕES DE LEITURA
 
 int main(){
 
+    int quantidadeDePessoasParaLer;
+    int quantidadeDeEditorasParaLer;
+
+    Pessoas vetorDePessoasInicial[4];
+    Editoras vetorDeEditorasInicial[4];
+
+    leituraDePessoas(vetorDePessoasInicial, 4);
 }
