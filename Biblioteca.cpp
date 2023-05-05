@@ -147,6 +147,20 @@ void insercaoNaTabelaDePessoas(Pessoas vPessoaInicial[], Pessoas vPessoaTemporar
     }
 }
 
+void insercaoNaTabelaDeLivros(Livros vLivroInicial[], Livros vLivroTemporario[], Livros vLivroAtualizado[], int quantidadeDeLivrosInicial, int quantidadeDeLivrosTemporario, int quantidadeDeLivrosAtualizado){
+    int contLivroInicial = 0;
+    int contLivroTemporario = 0;
+    int contLivroAtualizado = 0;
+    while((contLivroInicial < quantidadeDeLivrosInicial) && (contLivroTemporario < quantidadeDeLivrosTemporario)){
+        if(vLivroInicial[contLivroInicial].codigo < vLivroTemporario[contLivroTemporario].codigo){
+            vLivroAtualizado[contLivroAtualizado].codigo = vLivroInicial[contLivroInicial].codigo;
+            strcpy(vLivroAtualizado[contLivroAtualizado].nome, vLivroInicial[contLivroInicial].nome);
+            vLivroAtualizado[contLivroAtualizado].codigo_editora = vLivroInicial[contLivroInicial].codigo_editora;
+            vLivroAtualizado[contLivroAtualizado].codigo_autor = vLivroInicial[contLivroInicial].codigo_autor;
+        }
+    }
+}
+
 //OBS: TESTAR AS FUNÇÕES DE LEITURA
 
 int main(){
