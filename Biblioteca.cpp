@@ -1,7 +1,17 @@
 #include <iostream>
 #include <string.h>
 
+
+
 using namespace std;
+
+
+
+struct Data{
+    int dia;
+    int mes;
+    int ano;
+};
 
 struct Pessoas{
     int codigo;
@@ -32,8 +42,36 @@ struct Livros{
     int codigo_genero;
     int codigo_pessoa_emprestado;
     int qtde_emprestada;
-    char data_ultimo_emprestimo[30];
+    Data data_ultimo_emprestimo;
 };
+
+bool validaData(Data data) {
+    if (data.mes < 1 || data.mes > 12) {
+        return false;
+    }
+
+    if (data.dia < 1) {
+        return false;
+    }
+
+    int diasNoMes = 31;
+    if (data.mes == 4 || data.mes == 6 || data.mes == 9 || data.mes == 11) {
+        diasNoMes = 30;
+    } else if (data.mes == 2) {
+        if ((data.ano % 4 == 0 && data.ano % 100 != 0) || data.ano % 400 == 0) {
+            diasNoMes = 29;
+        } else {
+            diasNoMes = 28;
+        }
+    }
+
+    if (data.dia > diasNoMes) {
+        return false;
+    }
+
+    return true;
+}
+
 
 void leituraDePessoas(Pessoas vetorDePessoas[], int quantidadeDePessoas){
     for(int cont = 0; cont < quantidadeDePessoas; cont++){
@@ -77,15 +115,44 @@ void leituraDeGeneros(Generos vetorDeGeneros[], int quantidadeDeGeneros){
     }
 }
 
-void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros){
+int buscaBinariaNaTabelaDeEditoras(Editoras vEditora[], int inicio, int fim, int chave) {
+    if (inicio <= fim) {
+        int meio = (inicio + fim) / 2;
+        if (vEditora[meio].codigo == chave) {
+            cout << "Editora encontrada!" << endl;
+            cout << "Nome: " << vEditora[meio].nome << endl;
+            return meio;
+        } else if (vEditora[meio].codigo < chave) {
+            return buscaBinariaNaTabelaDeEditoras(vEditora, meio + 1, fim, chave);
+        } else {
+            return buscaBinariaNaTabelaDeEditoras(vEditora, inicio, meio - 1, chave);
+        }
+    } else {
+        cout << "Editora nao encontrada" << endl;
+        return -1;
+    }
+}
+
+void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros, Editoras* vetorDeEditoras, int quantidadeDeEditoras){
+    bool editoraEncontrada;
+    bool dataValida = false;
+    int posicaoEditora;
+
     for(int cont = 0; cont < quantidadeDeLivros; cont++){
         cout << "Digite o codigo do livro: ";
         cin >> vetorDeLivros[cont].codigo;
         cin.ignore();
         cout << "Digite o nome do livro: ";
         gets(vetorDeLivros[cont].nome);
-        cout << "Digite o codigo da editora: ";
-        cin >> vetorDeLivros[cont].codigo_editora;
+        while(!editoraEncontrada){
+           cout << "Digite o codigo da editora: ";
+           cin >> vetorDeLivros[cont].codigo_editora;
+           cin.ignore();
+           int posicaoEditora = buscaBinariaNaTabelaDeEditoras(vetorDeEditoras, 0, quantidadeDeEditoras - 1, vetorDeLivros[cont].codigo_editora);
+           if(posicaoEditora != -1){
+            editoraEncontrada = true;
+           }
+        }
         cin.ignore();
         cout << "Digite o codigo do autor: ";
         cin >> vetorDeLivros[cont].codigo_autor;
@@ -99,8 +166,17 @@ void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros){
         cout << "Digite a quantidade emprestada: ";
         cin >> vetorDeLivros[cont].qtde_emprestada;
         cin.ignore();
-        cout << "Digite a data do ultimo emprestimo: ";
-        gets(vetorDeLivros[cont].data_ultimo_emprestimo);
+        while(!dataValida){
+            cout << "Digite a data do ultimo emprestimo (DD/MM/AAAA): ";
+            char strData[11];
+            gets(strData);
+            sscanf(strData, "%d/%d/%d", &vetorDeLivros[cont].data_ultimo_emprestimo.dia, &vetorDeLivros[cont].data_ultimo_emprestimo.mes, &vetorDeLivros[cont].data_ultimo_emprestimo.ano);
+            if(validaData(vetorDeLivros[cont].data_ultimo_emprestimo)){
+                dataValida = true;
+            }else{
+                cout << "Data invalida. Digite uma nova data. \n";
+            }
+        }
     }
 }
 
@@ -157,19 +233,54 @@ void insercaoNaTabelaDeLivros(Livros vLivroInicial[], Livros vLivroTemporario[],
             strcpy(vLivroAtualizado[contLivroAtualizado].nome, vLivroInicial[contLivroInicial].nome);
             vLivroAtualizado[contLivroAtualizado].codigo_editora = vLivroInicial[contLivroInicial].codigo_editora;
             vLivroAtualizado[contLivroAtualizado].codigo_autor = vLivroInicial[contLivroInicial].codigo_autor;
+            vLivroAtualizado[contLivroAtualizado].codigo_genero = vLivroInicial[contLivroInicial].codigo_genero;
+            vLivroAtualizado[contLivroAtualizado].codigo_pessoa_emprestado = vLivroInicial[contLivroInicial].codigo_pessoa_emprestado;
+            vLivroAtualizado[contLivroAtualizado].qtde_emprestada = vLivroInicial[contLivroInicial].qtde_emprestada;
+            vLivroAtualizado[contLivroAtualizado].data_ultimo_emprestimo = vLivroInicial[contLivroInicial].data_ultimo_emprestimo;
+            contLivroInicial++;
+        }else{
+            vLivroAtualizado[contLivroAtualizado].codigo = vLivroTemporario[contLivroTemporario].codigo;
+            strcpy(vLivroAtualizado[contLivroAtualizado].nome, vLivroTemporario[contLivroTemporario].nome);
+            vLivroAtualizado[contLivroAtualizado].codigo_editora = vLivroTemporario[contLivroTemporario].codigo_editora;
+            vLivroAtualizado[contLivroAtualizado].codigo_autor = vLivroTemporario[contLivroTemporario].codigo_autor;
+            vLivroAtualizado[contLivroAtualizado].codigo_genero = vLivroTemporario[contLivroTemporario].codigo_genero;
+            vLivroAtualizado[contLivroAtualizado].codigo_pessoa_emprestado = vLivroTemporario[contLivroTemporario].codigo_pessoa_emprestado;
+            vLivroAtualizado[contLivroAtualizado].qtde_emprestada = vLivroTemporario[contLivroTemporario].qtde_emprestada;
+            vLivroAtualizado[contLivroAtualizado].data_ultimo_emprestimo = vLivroTemporario[contLivroTemporario].data_ultimo_emprestimo;
+            contLivroTemporario++;
         }
+        contLivroAtualizado++;
+    }
+
+    while(contLivroInicial < quantidadeDeLivrosInicial){
+        vLivroAtualizado[contLivroAtualizado].codigo = vLivroInicial[contLivroInicial].codigo;
+        strcpy(vLivroAtualizado[contLivroAtualizado].nome, vLivroInicial[contLivroInicial].nome);
+        vLivroAtualizado[contLivroAtualizado].codigo_editora = vLivroInicial[contLivroInicial].codigo_editora;
+        vLivroAtualizado[contLivroAtualizado].codigo_autor = vLivroInicial[contLivroInicial].codigo_autor;
+        vLivroAtualizado[contLivroAtualizado].codigo_genero = vLivroInicial[contLivroInicial].codigo_genero;
+        vLivroAtualizado[contLivroAtualizado].codigo_pessoa_emprestado = vLivroInicial[contLivroInicial].codigo_pessoa_emprestado;
+        vLivroAtualizado[contLivroAtualizado].qtde_emprestada = vLivroInicial[contLivroInicial].qtde_emprestada;
+        vLivroAtualizado[contLivroAtualizado].data_ultimo_emprestimo = vLivroInicial[contLivroInicial].data_ultimo_emprestimo;
+        contLivroInicial++;
+        contLivroAtualizado++;
+    }
+
+    while(contLivroTemporario < quantidadeDeLivrosAtualizado){
+        vLivroAtualizado[contLivroAtualizado].codigo = vLivroTemporario[contLivroTemporario].codigo;
+        strcpy(vLivroAtualizado[contLivroAtualizado].nome, vLivroTemporario[contLivroTemporario].nome);
+        vLivroAtualizado[contLivroAtualizado].codigo_editora = vLivroTemporario[contLivroTemporario].codigo_editora;
+        vLivroAtualizado[contLivroAtualizado].codigo_autor = vLivroTemporario[contLivroTemporario].codigo_autor;
+        vLivroAtualizado[contLivroAtualizado].codigo_genero = vLivroTemporario[contLivroTemporario].codigo_genero;
+        vLivroAtualizado[contLivroAtualizado].codigo_pessoa_emprestado = vLivroTemporario[contLivroTemporario].codigo_pessoa_emprestado;
+        vLivroAtualizado[contLivroAtualizado].qtde_emprestada = vLivroTemporario[contLivroTemporario].qtde_emprestada;
+        vLivroAtualizado[contLivroAtualizado].data_ultimo_emprestimo = vLivroTemporario[contLivroTemporario].data_ultimo_emprestimo;
+        contLivroTemporario++;
+        contLivroAtualizado++;
     }
 }
 
-//OBS: TESTAR AS FUNÇÕES DE LEITURA
+//OBS: TESTAR AS FUNÇÕES DE LEITURA E INSERCAO
 
 int main(){
 
-    int quantidadeDePessoasParaLer;
-    int quantidadeDeEditorasParaLer;
-
-    Pessoas vetorDePessoasInicial[4];
-    Editoras vetorDeEditorasInicial[4];
-
-    leituraDePessoas(vetorDePessoasInicial, 4);
 }
