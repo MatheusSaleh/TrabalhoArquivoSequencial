@@ -133,10 +133,50 @@ int buscaBinariaNaTabelaDeEditoras(Editoras vEditora[], int inicio, int fim, int
     }
 }
 
-void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros, Editoras* vetorDeEditoras, int quantidadeDeEditoras){
-    bool editoraEncontrada;
+int buscaBinariaNaTabelaDeAutores(Autores vAutores[], int inicio, int fim, int chave){
+    if(inicio <= fim){
+        int meio = (inicio+fim) / 2;
+        if(vAutores[meio].codigo == chave){
+            cout << "Autor Encontrado!" << endl;
+            cout << "Nome: " << vAutores[meio].nome << endl;
+            return meio;
+        }else if (vAutores[meio].codigo < chave){
+            return buscaBinariaNaTabelaDeAutores(vAutores, meio + 1, fim, chave);
+        } else{
+            return buscaBinariaNaTabelaDeAutores(vAutores, inicio, meio - 1, chave);
+        }
+    } else{
+        cout << "Autor nao encontrado " << endl;
+        return -1;
+    }
+}
+
+int buscaBinariaNaTabelaDeGeneros(Generos vGeneros[], int inicio, int fim, int chave){
+    if(inicio <= fim){
+        int meio = (inicio+fim) / 2;
+        if(vGeneros[meio].codigo == chave){
+            cout << "Genero Encontrado!" << endl;
+            cout << "Descricao do Genero: " << vGeneros[meio].descricao << endl;
+            return meio;
+        }else if(vGeneros[meio].codigo < chave){
+            return buscaBinariaNaTabelaDeGeneros(vGeneros, meio+1, fim, chave);
+        } else{
+            return buscaBinariaNaTabelaDeGeneros(vGeneros, inicio, meio - 1, chave);
+        }
+    } else{
+        cout << "Genero nao encontrado " << endl;
+        return -1;
+    }
+}
+
+void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros, Editoras* vetorDeEditoras, int quantidadeDeEditoras, Autores* vetorDeAutores, int quantidadeDeAutores, Generos* vetorDeGeneros, int quantidadeDeGeneros){
+    bool editoraEncontrada = false;
+    bool autorEncontrado = false;
+    bool generoEncontrado = false;
     bool dataValida = false;
     int posicaoEditora;
+    int posicaoAutor;
+    int posicaoGenero;
 
     for(int cont = 0; cont < quantidadeDeLivros; cont++){
         cout << "Digite o codigo do livro: ";
@@ -148,17 +188,37 @@ void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros, Editoras* v
            cout << "Digite o codigo da editora: ";
            cin >> vetorDeLivros[cont].codigo_editora;
            cin.ignore();
-           int posicaoEditora = buscaBinariaNaTabelaDeEditoras(vetorDeEditoras, 0, quantidadeDeEditoras - 1, vetorDeLivros[cont].codigo_editora);
+           posicaoEditora = buscaBinariaNaTabelaDeEditoras(vetorDeEditoras, 0, quantidadeDeEditoras - 1, vetorDeLivros[cont].codigo_editora);
            if(posicaoEditora != -1){
             editoraEncontrada = true;
+           }else{
+           cout << "Editora nao encontrada. Digite novamente \n";
            }
         }
         cin.ignore();
-        cout << "Digite o codigo do autor: ";
-        cin >> vetorDeLivros[cont].codigo_autor;
+        while(!autorEncontrado){
+            cout << "Digite o codigo do autor: ";
+            cin >> vetorDeLivros[cont].codigo_autor;
+            cin.ignore();
+            posicaoAutor = buscaBinariaNaTabelaDeAutores(vetorDeAutores, 0, quantidadeDeAutores - 1, vetorDeLivros[cont].codigo_autor);
+            if(posicaoAutor != -1){
+                autorEncontrado = true;
+            }else{
+                cout << "Autor nao encontrado. Digite novamente \n";
+            }
+        }
         cin.ignore();
-        cout << "Digite o codigo do genero: ";
-        cin >> vetorDeLivros[cont].codigo_genero;
+        while(!generoEncontrado){
+            cout << "Digite o codigo do genero: ";
+            cin >> vetorDeLivros[cont].codigo_genero;
+            cin.ignore();
+            posicaoGenero = buscaBinariaNaTabelaDeGeneros(vetorDeGeneros, 0, quantidadeDeGeneros - 1, vetorDeLivros[cont].codigo_genero);
+            if(posicaoGenero != -1){
+                generoEncontrado = true;
+            }else{
+                cout << "Genero nao encontrado. Digite novamente \n";
+            }
+        }
         cin.ignore();
         cout << "Digite o codigo da pessoa que emprestou o livro: ";
         cin >> vetorDeLivros[cont].codigo_pessoa_emprestado;
@@ -279,7 +339,31 @@ void insercaoNaTabelaDeLivros(Livros vLivroInicial[], Livros vLivroTemporario[],
     }
 }
 
-//OBS: TESTAR AS FUNÇÕES DE LEITURA E INSERCAO
+int buscaBinariaNaTabelaDeLivros(Livros vLivro[], int inicio, int fim, int chave){
+    if(inicio <= fim){
+        int meio = (inicio + fim) / 2;
+        if(vLivro[meio].codigo == chave){
+            cout << "Livro Encontrado!" << endl;
+            cout << "Nome do Livro: " << vLivro[meio].nome << endl;
+            return meio;
+        }else if(vLivro[meio].codigo < chave){
+            return buscaBinariaNaTabelaDeLivros(vLivro, meio + 1, fim, chave);
+        }else{
+            return buscaBinariaNaTabelaDeLivros(vLivro, inicio, meio - 1, chave);
+        }
+    }else{
+        cout << "Livro nao encontrado" << endl;
+        return -1;
+    }
+}
+
+void realizaEmprestimoLivro(Livros vLivro[]){
+    int codigoDoLivroDesejado;
+    cout << "Digite o codigo do livro desejado: ";
+    cin >> codigoDoLivroDesejado;
+}
+
+//OBS: TESTAR AS FUNÇÕES
 
 int main(){
 
