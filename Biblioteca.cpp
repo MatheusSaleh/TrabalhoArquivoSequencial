@@ -357,10 +357,72 @@ int buscaBinariaNaTabelaDeLivros(Livros vLivro[], int inicio, int fim, int chave
     }
 }
 
-void realizaEmprestimoLivro(Livros vLivro[]){
+int buscaBinariaNaTabelaDePessoas(Pessoas vPessoa[], int inicio, int fim, int chave){
+    if(inicio <= fim){
+        int meio = (inicio + fim) / 2;
+        if(vPessoa[meio].codigo == chave){
+            cout << "Pessoa Encontrada! " << endl;
+            cout << "Nome da Pessoa: " << vPessoa[meio].nome << endl;
+            return meio;
+        }else if(vPessoa[meio].codigo < chave){
+            return buscaBinariaNaTabelaDePessoas(vPessoa, meio + 1, fim, chave);
+        }else{
+            return buscaBinariaNaTabelaDePessoas(vPessoa, inicio, meio - 1, chave);
+        }
+    }else{
+        cout << "Pessoa nao encontrada" << endl;
+        return -1;
+    }
+}
+
+void realizaEmprestimoLivro(Livros vLivro[], Editoras vEditoras[], Autores vAutores[], Pessoas vPessoas[], int quantidadeDeLivrosNoVetorDeLivro, int quantidadeDeEditoras, int quantidadeDeAutores, int quantidadeDePessoas){
     int codigoDoLivroDesejado;
-    cout << "Digite o codigo do livro desejado: ";
+    int posicaoDoLivroEncontrado;
+    int posicaoDaEditoraEncontrada;
+    int posicaoDoAutorEncontrado;
+    int posicaoDaPessoaEncontrada;
+    int codigoDaPessoaQueIraEmprestarLivro;
+    bool dataValida = false;
+    Data data_disponivel;
+    cout << "Digite o codigo do livro para realizar emprestimo: ";
     cin >> codigoDoLivroDesejado;
+    posicaoDoLivroEncontrado = buscaBinariaNaTabelaDeLivros(vLivro, 0, quantidadeDeLivrosNoVetorDeLivro - 1, codigoDoLivroDesejado);
+    posicaoDaEditoraEncontrada = buscaBinariaNaTabelaDeEditoras(vEditoras, 0, quantidadeDeEditoras - 1, vLivro[codigoDoLivroDesejado].codigo_editora);
+    posicaoDoAutorEncontrado = buscaBinariaNaTabelaDeAutores(vAutores, 0, quantidadeDeAutores - 1, vLivro[codigoDoLivroDesejado].codigo_autor);
+    if(vLivro[codigoDoLivroDesejado].codigo_pessoa_emprestado == 0){
+        cout << "Este livro esta disponivel para emprestimo! " << endl;
+        cout << "Digite o codigo da pessoa que deseja emprestar o livro: ";
+        cin >> codigoDaPessoaQueIraEmprestarLivro;
+        posicaoDaPessoaEncontrada = buscaBinariaNaTabelaDePessoas(vPessoas, 0, quantidadeDePessoas - 1, vLivro[codigoDoLivroDesejado].codigo_pessoa_emprestado);
+        vLivro[codigoDoLivroDesejado].qtde_emprestada++;
+        while(!dataValida){
+            cout << "Digite a data em que se esta realizando o emprestimo: (DD/MM/AAAA): ";
+            char strData[11];
+            gets(strData);
+            sscanf(strData, "%d/%d/%d", &vLivro[codigoDoLivroDesejado].data_ultimo_emprestimo.dia, &vLivro[codigoDoLivroDesejado].data_ultimo_emprestimo.mes, &vLivro[codigoDoLivroDesejado].data_ultimo_emprestimo.ano);
+            if(validaData(vLivro[codigoDoLivroDesejado].data_ultimo_emprestimo)){
+                dataValida = true;
+            }else{
+                cout << "Data invalida. Digite uma nova data. \n";
+            }
+        }
+    }else{
+        cout << "Nao e possivel realizar o emprestimo esse livro nao esta disponivel";
+        data_disponivel.dia = vLivro[codigoDoLivroDesejado].data_ultimo_emprestimo.dia + 5;
+        data_disponivel.mes = vLivro[codigoDoLivroDesejado].data_ultimo_emprestimo.mes;
+        data_disponivel.ano = vLivro[codigoDoLivroDesejado].data_ultimo_emprestimo.ano;
+
+        if(data_disponivel.dia > 31){
+            data_disponivel.dia -= 31;
+            data_disponivel.mes++;
+        }
+        if(data_disponivel.mes > 12){
+            data_disponivel.mes = 1;
+            data_disponivel.ano++;
+        }
+
+        cout << "O livro estara disponivel novamente em " << data_disponivel.dia << "/" << data_disponivel.mes << "/" << data_disponivel.ano << endl;
+    }
 }
 
 //OBS: TESTAR AS FUNÇÕES
