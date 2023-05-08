@@ -425,6 +425,26 @@ void realizaEmprestimoLivro(Livros vLivro[], Editoras vEditoras[], Autores vAuto
     }
 }
 
+void mostraLivrosEmprestados(Livros vLivro[], int quantidadeDeLivros, Pessoas vPessoa[], int quantidadeDePessoas){
+    int contDeLivrosDisponiveisParaEmprestimo;
+    int contDeLivrosEmprestados;
+    int codigoDaPessoaQueEmprestouLivro;
+    for(int cont = 0; cont < quantidadeDeLivros; cont++){
+        if(vLivro[cont].codigo_pessoa_emprestado != 0){
+            cout << "Livros Emprestados: " << endl;
+            cout << "Codigo: " << vLivro[cont].codigo << "Nome: " << vLivro[cont].nome;
+            codigoDaPessoaQueEmprestouLivro = buscaBinariaNaTabelaDePessoas(vPessoa, 0, quantidadeDePessoas - 1, vLivro[cont].codigo_pessoa_emprestado);
+            contDeLivrosEmprestados++;
+        }else{
+            cout << "Livros Disponiveis para Emprestimo: " << endl;
+            cout << "Codigo: " << vLivro[cont].codigo << "Nome: " << vLivro[cont].nome;
+            contDeLivrosDisponiveisParaEmprestimo++;
+        }
+    }
+    cout << "Quantidade de Livros emprestados: " << contDeLivrosEmprestados << endl;
+    cout << "Quantidade de Livros disponiveis para emprestimo: " << contDeLivrosDisponiveisParaEmprestimo << endl;
+}
+
 //OBS: TESTAR AS FUNÇÕES
 
 int main(){
