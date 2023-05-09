@@ -425,6 +425,60 @@ void realizaEmprestimoLivro(Livros vLivro[], Editoras vEditoras[], Autores vAuto
     }
 }
 
+void realizaDevolucaoLivro(Livros vLivrosS[], Livros vLivrosA[], int contS, int contT, int &contA, int livroTemporario[], int quantidadeDeLivrosParaSeremDevolvidos, Editoras vEditora[], Autores vAutor[], int quantidadeDeEditoras, int quantidadeDeAutores){
+    //O vetor livroTemporario recebera os codigos dos livros a serem devolvidos
+    int posDoLivroParaSerDevolvido;
+    int posDaEditoraDoLivroParaSerDevolvido;
+    int posDoAutorDoLivroParaSerDevolvido;
+    bool osLivrosEstaoEmprestados = false;
+    for(int cont = 0; cont < quantidadeDeLivrosParaSeremDevolvidos; cont++){
+        posDoLivroParaSerDevolvido = buscaBinariaNaTabelaDeLivros(vLivrosS, 0, quantidadeDeLivrosParaSeremDevolvidos++, vLivrosS[cont].codigo);
+        posDaEditoraDoLivroParaSerDevolvido = buscaBinariaNaTabelaDeEditoras(vEditora, 0, quantidadeDeEditoras - 1, vLivrosS[cont].codigo_editora);
+        posDoAutorDoLivroParaSerDevolvido = buscaBinariaNaTabelaDeAutores(vAutor, 0, quantidadeDeAutores - 1, vLivrosS[cont].codigo_autor);
+        vLivrosS[cont].codigo_pessoa_emprestado = 0;
+        if(vLivrosS[cont].codigo_pessoa_emprestado != 0){
+            osLivrosEstaoEmprestados = true;
+        }
+        else{
+            cout << "Erro! um ou mais livros que voce digitou nao estao emprestados";
+        }
+    }
+    int i = 0, j = 0, k = 0; // i (Contador vLivrosS) j (Contador livroTemporario) k (Contador vLivroA)
+
+    //Funcao que fara a remocao dos livros da lista de livros Emprestados
+    if(osLivrosEstaoEmprestados){
+     for(;j < contT; i++){
+        if(vLivrosS[i].codigo != livroTemporario[j]){
+            vLivrosA[k].codigo = vLivrosS[i].codigo;
+            vLivrosA[k].codigo_autor = vLivrosS[i].codigo_autor;
+            vLivrosA[k].codigo_editora = vLivrosS[i].codigo_editora;
+            vLivrosA[k].codigo_genero = vLivrosS[i].codigo_genero;
+            vLivrosA[k].codigo_pessoa_emprestado = vLivrosS[i].codigo_pessoa_emprestado;
+            vLivrosA[k].data_ultimo_emprestimo = vLivrosS[i].data_ultimo_emprestimo;
+            strcpy(vLivrosA[k].nome, vLivrosS[i].nome);
+            vLivrosA[k].qtde_emprestada = vLivrosS[i].qtde_emprestada;
+            k++;
+        }
+        else{
+            j++;
+        }
+    }
+    while(i < contS){
+            vLivrosA[k].codigo = vLivrosS[i].codigo;
+            vLivrosA[k].codigo_autor = vLivrosS[i].codigo_autor;
+            vLivrosA[k].codigo_editora = vLivrosS[i].codigo_editora;
+            vLivrosA[k].codigo_genero = vLivrosS[i].codigo_genero;
+            vLivrosA[k].codigo_pessoa_emprestado = vLivrosS[i].codigo_pessoa_emprestado;
+            vLivrosA[k].data_ultimo_emprestimo = vLivrosS[i].data_ultimo_emprestimo;
+            strcpy(vLivrosA[k].nome, vLivrosS[i].nome);
+            vLivrosA[k].qtde_emprestada = vLivrosS[i].qtde_emprestada;
+            i++;
+            k++;
+        }
+        contA = k;
+    }
+}
+
 void mostraLivrosEmprestados(Livros vLivro[], int quantidadeDeLivros, Pessoas vPessoa[], int quantidadeDePessoas){
     int contDeLivrosDisponiveisParaEmprestimo;
     int contDeLivrosEmprestados;
