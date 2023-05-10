@@ -502,7 +502,7 @@ void mostraLivrosEmprestados(Livros vLivro[], int quantidadeDeLivros, Pessoas vP
 
 
 void mostraLivroMaisEmprestado(Livros vLivro[], Editoras vEditora[], Autores vAutores[], int quantidadeDeLivros, int quantidadeDeEditoras, int quantidadeDeAutores){
-    Livros livroMaisEmprestado = vLivro[0].qtde_emprestada;
+    Livros livroMaisEmprestado = vLivro[0];
     int posEditoraMaisEmprestado;
     int posAutorMaisEmprestado;
     for(int cont = 0; cont < quantidadeDeLivros; cont++){
@@ -517,7 +517,7 @@ void mostraLivroMaisEmprestado(Livros vLivro[], Editoras vEditora[], Autores vAu
 }
 
 void mostraLivrosMenosEmprestados(Livros vLivro[], Editoras vEditora[], Autores vAutores[], int quantidadeDeLivros, int quantidadeDeEditoras, int quantidadeDeAutores){
-    Livros livroMenosEmprestado = vLivro[0].qtde_emprestada;
+    Livros livroMenosEmprestado = vLivro[0];
     int posEditoraMenosEmprestado;
     int posAutorMenosEmprestado;
     for(int cont = 0; cont < quantidadeDeLivros; cont++){
@@ -531,6 +531,120 @@ void mostraLivrosMenosEmprestados(Livros vLivro[], Editoras vEditora[], Autores 
     posEditoraMenosEmprestado = buscaBinariaNaTabelaDeEditoras(vEditora, 0, quantidadeDeEditoras - 1, livroMenosEmprestado.codigo_editora);
 }
 
-int main(){
+void mostraDadosDeLivrosComDevolucaoEmAtraso(Livros vLivro[], int quantidadeDeLivros, Data dataAtual, Editoras vEditora[], Autores vAutores[], int quantidadeDeEditoras, int quantidadeDeAutores){
+    int posEditoraLivroAtraso;
+    int posAutorLivroAtraso;
+    int diasEmAtraso;
+    for(int cont = 0; cont < quantidadeDeLivros; cont++){
+        if((vLivro[cont].data_ultimo_emprestimo.dia + 5) < dataAtual.dia + 5){
+            posEditoraLivroAtraso = buscaBinariaNaTabelaDeEditoras(vEditora, 0, quantidadeDeEditoras - 1, vLivro[cont].codigo_editora);
+            posAutorLivroAtraso = buscaBinariaNaTabelaDeAutores(vAutores, 0, quantidadeDeAutores - 1, vLivro[cont].codigo_autor);
+            diasEmAtraso = (dataAtual.dia - vLivro[cont].data_ultimo_emprestimo.dia + 5);
+            cout << "Livros em atraso: " << endl;
+            cout << "Nome: " << vLivro[cont].nome << endl;
+            cout << "Dias em atraso: " << diasEmAtraso;
+        }
+    }
+}
 
+int main(){
+    int quantidadeDePessoas = 5;
+    int quantidadeDeEditoras = 5;
+    int quantidadeDeAutores = 5;
+    int quantidadeDeGeneros= 5;
+    int quantidadeDeLivros = 5;
+    int quantidadeDePessoasParaSerAdicionado = 2;
+    int quantidadeDeLivrosParaSerAdicionado = 2;
+    int quantidadeDePessoasDepoisDeAdicionado = 7;
+    int quantidadeDeLivrosDepoisDeAdicionado = 7;
+    int opcao;
+    bool dataValida = false;
+    Data diaDeHoje;
+    Pessoas vPessoa[5];
+    Editoras vEditora[5];
+    Autores vAutores[5];
+    Generos vGeneros[5];
+    Livros vLivros[5];
+    Pessoas vPessoaTemporario[2];
+    Livros vLivroTemporario[2];
+    Pessoas vPessoaAtualizado[7];
+    Livros vLivroAtualizado[7];
+    while(!dataValida){
+        cout << "Digite a data de hoje (DD/MM/AAAA): ";
+        char strData[11];
+        gets(strData);
+        sscanf(strData, "%d/%d/%d", &diaDeHoje.dia, &diaDeHoje.mes, &diaDeHoje.ano);
+        if(validaData(diaDeHoje)){
+            dataValida = true;
+        }else{
+            cout << "Data invalida. Digite uma nova data. \n";
+        }
+    }
+    do{
+        cout << "Selecione uma opcao:\n";
+        cout << "1 - Realizar leitura das estruturas\n";
+        cout << "2 - Incluir Novo Registro na tabela de pessoas\n";
+        cout << "3 - Incluir Novo registro na tabela de livros\n";
+        cout << "4 - Realizar Emprestimo de Livro\n";
+        cout << "5- Realizar Devolucao de Livro\n";
+        cout << "6- Mostrar todos os livros emprestados\n";
+        cout << "7- Mostrar Dados do Livro mais emprestado\n";
+        cout << "8- Mostrar Dados do Livro menos emprestado\n";
+        cout << "9- Mostrar Livros com Devolucao em atraso\n";
+        cout << "0 - Encerrar\n";
+        cin >> opcao;
+        switch(opcao){
+            case 1:
+                cout << "Voce escolheu Realizar a leitura das estruturas\n";
+                cout << "LEITURA DAS PESSOAS \n";
+                leituraDePessoas(vPessoa, quantidadeDePessoas);
+                cout << "LEITURA DAS EDITORAS \n";
+                leituraDeEditoras(vEditora, quantidadeDeEditoras);
+                cout << "LEITURA DOS AUTORES \n";
+                leituraDeAutores(vAutores, quantidadeDeAutores);
+                cout << "LEITURA DOS GENEROS \n";
+                leituraDeGeneros(vGeneros, quantidadeDeGeneros);
+                cout << "LEITURA DOS LIVROS \n";
+                leituraDeLivros(vLivros, quantidadeDeLivros, vEditora, quantidadeDeEditoras, vAutores, quantidadeDeAutores, vGeneros, quantidadeDeGeneros);
+                break;
+            case 2:
+                cout << "Voce escolheu incluir novo registro na tabela de pessoas\n";
+                //Leitura das Pessoas que serao adicionadas
+                leituraDePessoas(vPessoaTemporario, quantidadeDePessoasParaSerAdicionado);
+                insercaoNaTabelaDePessoas(vPessoa, vPessoaTemporario, vPessoaAtualizado, quantidadeDePessoas, quantidadeDePessoasParaSerAdicionado, quantidadeDePessoasDepoisDeAdicionado);
+                break;
+            case 3:
+                cout << "Voce escolheu incluir novo registro na tabela de livros\n";
+                //Leitura dos livros que serao adicionados
+                leituraDeLivros(vLivroTemporario, quantidadeDeLivrosParaSerAdicionado, vEditora, quantidadeDeEditoras, vAutores, quantidadeDeAutores, vGeneros, quantidadeDeGeneros);
+                break;
+            case 4:
+                cout << "Voce escolheu realizar emprestimo de livro\n";
+            case 5:
+                cout << "Voce escolheu realizar devolucao do livro\n";
+                break;
+            case 6:
+                cout << "Voce escolheu realizar mostrar todos os livros emprestados\n";
+                mostraLivrosEmprestados(vLivroAtualizado, quantidadeDeLivrosDepoisDeAdicionado, vPessoaAtualizado, quantidadeDePessoasDepoisDeAdicionado);
+                break;
+            case 7:
+                cout << "Voce escolheu mostrar os dados do livro mais emprestado\n";
+                mostraLivroMaisEmprestado(vLivroAtualizado, vEditora, vAutores, quantidadeDeLivrosDepoisDeAdicionado, quantidadeDeEditoras, quantidadeDeAutores);
+                break;
+            case 8:
+                cout << "Voce escolheu mostrar os dados do livro menos emprestado\n";
+                mostraLivrosMenosEmprestados(vLivroAtualizado, vEditora, vAutores, quantidadeDeLivrosDepoisDeAdicionado, quantidadeDeEditoras, quantidadeDeAutores);
+                break;
+            case 9:
+                cout << "Voce escolheu mostrar os livros com devolucao em atraso\n";
+                break;
+            case 0:
+                cout << "Encerrando o programa...\n";
+                break;
+            default:
+                cout << "Opcao invalida. Tente novamente.\n";
+                break;
+        }
+    } while(opcao != 0);
+    return 0;
 }
