@@ -438,6 +438,7 @@ void realizaDevolucaoLivro(Livros vLivrosS[], Livros vLivrosA[], int contS, int 
         vLivrosS[cont].codigo_pessoa_emprestado = 0;
         if(vLivrosS[cont].codigo_pessoa_emprestado != 0){
             osLivrosEstaoEmprestados = true;
+
         }
         else{
             cout << "Erro! um ou mais livros que voce digitou nao estao emprestados";
@@ -499,7 +500,36 @@ void mostraLivrosEmprestados(Livros vLivro[], int quantidadeDeLivros, Pessoas vP
     cout << "Quantidade de Livros disponiveis para emprestimo: " << contDeLivrosDisponiveisParaEmprestimo << endl;
 }
 
-//OBS: TESTAR AS FUNÇÕES
+
+void mostraLivroMaisEmprestado(Livros vLivro[], Editoras vEditora[], Autores vAutores[], int quantidadeDeLivros, int quantidadeDeEditoras, int quantidadeDeAutores){
+    Livros livroMaisEmprestado = vLivro[0].qtde_emprestada;
+    int posEditoraMaisEmprestado;
+    int posAutorMaisEmprestado;
+    for(int cont = 0; cont < quantidadeDeLivros; cont++){
+        if(vLivro[cont].qtde_emprestada > livroMaisEmprestado.qtde_emprestada){
+            livroMaisEmprestado = vLivro[cont];
+        }
+    }
+    cout << "O livro mais emprestado e :" << livroMaisEmprestado.nome << endl;
+    cout << "Numero de vezes em que foi emprestado: " << livroMaisEmprestado.qtde_emprestada;
+    posAutorMaisEmprestado = buscaBinariaNaTabelaDeAutores(vAutores, 0, quantidadeDeAutores - 1, livroMaisEmprestado.codigo_autor);
+    posEditoraMaisEmprestado = buscaBinariaNaTabelaDeEditoras(vEditora, 0, quantidadeDeEditoras - 1, livroMaisEmprestado.codigo_editora);
+}
+
+void mostraLivrosMenosEmprestados(Livros vLivro[], Editoras vEditora[], Autores vAutores[], int quantidadeDeLivros, int quantidadeDeEditoras, int quantidadeDeAutores){
+    Livros livroMenosEmprestado = vLivro[0].qtde_emprestada;
+    int posEditoraMenosEmprestado;
+    int posAutorMenosEmprestado;
+    for(int cont = 0; cont < quantidadeDeLivros; cont++){
+        if(vLivro[cont].qtde_emprestada < livroMenosEmprestado.qtde_emprestada){
+            livroMenosEmprestado = vLivro[cont];
+        }
+    }
+    cout << "O livro menos emprestado e :" << livroMenosEmprestado.nome << endl;
+    cout << "Numero de vezes em que foi emprestado: " << livroMenosEmprestado.qtde_emprestada;
+    posAutorMenosEmprestado = buscaBinariaNaTabelaDeAutores(vAutores, 0, quantidadeDeAutores - 1, livroMenosEmprestado.codigo_autor);
+    posEditoraMenosEmprestado = buscaBinariaNaTabelaDeEditoras(vEditora, 0, quantidadeDeEditoras - 1, livroMenosEmprestado.codigo_editora);
+}
 
 int main(){
 
