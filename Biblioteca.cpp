@@ -120,7 +120,7 @@ int buscaBinariaNaTabelaDeEditoras(Editoras vEditora[], int inicio, int fim, int
         int meio = (inicio + fim) / 2;
         if (vEditora[meio].codigo == chave) {
             cout << "Editora encontrada!" << endl;
-            cout << "Nome: " << vEditora[meio].nome << endl;
+            cout << "Nome: " << vEditora[meio].nome;
             return meio;
         } else if (vEditora[meio].codigo < chave) {
             return buscaBinariaNaTabelaDeEditoras(vEditora, meio + 1, fim, chave);
@@ -138,7 +138,7 @@ int buscaBinariaNaTabelaDeAutores(Autores vAutores[], int inicio, int fim, int c
         int meio = (inicio+fim) / 2;
         if(vAutores[meio].codigo == chave){
             cout << "Autor Encontrado!" << endl;
-            cout << "Nome: " << vAutores[meio].nome << endl;
+            cout << "Nome: " << vAutores[meio].nome;
             return meio;
         }else if (vAutores[meio].codigo < chave){
             return buscaBinariaNaTabelaDeAutores(vAutores, meio + 1, fim, chave);
@@ -156,7 +156,7 @@ int buscaBinariaNaTabelaDeGeneros(Generos vGeneros[], int inicio, int fim, int c
         int meio = (inicio+fim) / 2;
         if(vGeneros[meio].codigo == chave){
             cout << "Genero Encontrado!" << endl;
-            cout << "Descricao do Genero: " << vGeneros[meio].descricao << endl;
+            cout << "Descricao do Genero: " << vGeneros[meio].descricao;
             return meio;
         }else if(vGeneros[meio].codigo < chave){
             return buscaBinariaNaTabelaDeGeneros(vGeneros, meio+1, fim, chave);
@@ -179,6 +179,10 @@ void leituraDeLivros(Livros vetorDeLivros[], int quantidadeDeLivros, Editoras* v
     int posicaoGenero;
 
     for(int cont = 0; cont < quantidadeDeLivros; cont++){
+        editoraEncontrada = false;
+        autorEncontrado = false;
+        generoEncontrado = false;
+        dataValida = false;
         cout << "Digite o codigo do livro: ";
         cin >> vetorDeLivros[cont].codigo;
         cin.ignore();
