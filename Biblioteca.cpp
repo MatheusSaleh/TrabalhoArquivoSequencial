@@ -424,22 +424,18 @@ void realizaEmprestimoLivro(Livros vLivro[], Editoras vEditoras[], Autores vAuto
 
 void realizaDevolucaoLivro(Livros vLivro[], Editoras vEditora[], Autores vAutores[], int quantidadeDeEditoras, int quantidadeDeAutores, int quantidadeDeLivros, Pessoas vPessoa[], int quantidadeDePessoas){
     int codigoDoLivroParaSerDevolvido;
-    int posicaoDoLivroParaSerDevolvido;
-    int posicaoDaEditoraParaSerDevolvido;
-    int posicaoDoAutorParaSerDevolvido;
-    char respostaDoUsuario;
-    cout << "Digite o codigo do livro que se deseja realizar devolucao: ";
+    cout << "Digite o codigo do livro para ser devolvido: ";
     cin >> codigoDoLivroParaSerDevolvido;
-    if(vLivro[codigoDoLivroParaSerDevolvido].codigo_pessoa_emprestado == 0){
-        cout << "Esse livro encontra-se indisponivel para devolucao";
+    int posicaoDoLivroParaSerDevolvido = buscaBinariaNaTabelaDeLivros(vLivro, 0, quantidadeDeLivros - 1, codigoDoLivroParaSerDevolvido);
+    if(posicaoDoLivroParaSerDevolvido == -1){
+        cout << "O livro nao foi encontrado" << endl;
+        return;
+    }
+    if(vLivro[posicaoDoLivroParaSerDevolvido].codigo_pessoa_emprestado == 0){
+        cout << "Esse livro encontra-se indisponivel para devolucao" << endl;
     }else{
-        buscaBinariaNaTabelaDePessoas(vPessoa, 0, quantidadeDePessoas - 1, vLivro[codigoDoLivroParaSerDevolvido].codigo_pessoa_emprestado);
-        cout << "Voce confirma a devolucao ? (S/N): ";
-        cin >> respostaDoUsuario;
-        if(respostaDoUsuario == 'S'){
-            vLivro[codigoDoLivroParaSerDevolvido].codigo_pessoa_emprestado = 0;
-            cout << "Devolucao realizada com sucesso!";
-        }
+        vLivro[posicaoDoLivroParaSerDevolvido].codigo_pessoa_emprestado = 0;
+        cout << "Devolucao realizada com sucesso!" << endl;
     }
 }
 
