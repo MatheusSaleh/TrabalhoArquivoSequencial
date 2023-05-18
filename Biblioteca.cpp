@@ -278,13 +278,6 @@ void insercaoNaTabelaDePessoas(Pessoas vPessoaInicial[], Pessoas vPessoaTemporar
         contPessoaTemporario++;
         contPessoaAtualizado++;
     }
-
-    cout << "--- LISTA DEPOIS DA INSERCAO ---" << endl;
-    for(int cont = 0; cont < quantidadeDePessoasAtualizado; cont++){
-        cout << "Codigo: " << vPessoaAtualizado[cont].codigo << endl;
-        cout << "Nome: " << vPessoaAtualizado[cont].nome << endl;
-        cout << "Endereco: " << vPessoaAtualizado[cont].endereco << endl;
-    }
 }
 
 void insercaoNaTabelaDeLivros(Livros vLivroInicial[], Livros vLivroTemporario[], Livros vLivroAtualizado[], int quantidadeDeLivrosInicial, int quantidadeDeLivrosTemporario, int quantidadeDeLivrosAtualizado){
@@ -429,58 +422,24 @@ void realizaEmprestimoLivro(Livros vLivro[], Editoras vEditoras[], Autores vAuto
     }
 }
 
-void realizaDevolucaoLivro(Livros vLivrosS[], Livros vLivrosA[], int contS, int contT, int &contA, int livroTemporario[], int quantidadeDeLivrosParaSeremDevolvidos, Editoras vEditora[], Autores vAutor[], int quantidadeDeEditoras, int quantidadeDeAutores){
-    //O vetor livroTemporario recebera os codigos dos livros a serem devolvidos
-    int posDoLivroParaSerDevolvido;
-    int posDaEditoraDoLivroParaSerDevolvido;
-    int posDoAutorDoLivroParaSerDevolvido;
-    bool osLivrosEstaoEmprestados = false;
-    for(int cont = 0; cont < quantidadeDeLivrosParaSeremDevolvidos; cont++){
-        posDoLivroParaSerDevolvido = buscaBinariaNaTabelaDeLivros(vLivrosS, 0, quantidadeDeLivrosParaSeremDevolvidos++, vLivrosS[cont].codigo);
-        posDaEditoraDoLivroParaSerDevolvido = buscaBinariaNaTabelaDeEditoras(vEditora, 0, quantidadeDeEditoras - 1, vLivrosS[cont].codigo_editora);
-        posDoAutorDoLivroParaSerDevolvido = buscaBinariaNaTabelaDeAutores(vAutor, 0, quantidadeDeAutores - 1, vLivrosS[cont].codigo_autor);
-        vLivrosS[cont].codigo_pessoa_emprestado = 0;
-        if(vLivrosS[cont].codigo_pessoa_emprestado != 0){
-            osLivrosEstaoEmprestados = true;
-
+void realizaDevolucaoLivro(Livros vLivro[], Editoras vEditora[], Autores vAutores[], int quantidadeDeEditoras, int quantidadeDeAutores, int quantidadeDeLivros, Pessoas vPessoa[], int quantidadeDePessoas){
+    int codigoDoLivroParaSerDevolvido;
+    int posicaoDoLivroParaSerDevolvido;
+    int posicaoDaEditoraParaSerDevolvido;
+    int posicaoDoAutorParaSerDevolvido;
+    char respostaDoUsuario;
+    cout << "Digite o codigo do livro que se deseja realizar devolucao: ";
+    cin >> codigoDoLivroParaSerDevolvido;
+    if(vLivro[codigoDoLivroParaSerDevolvido].codigo_pessoa_emprestado == 0){
+        cout << "Esse livro encontra-se indisponivel para devolucao";
+    }else{
+        buscaBinariaNaTabelaDePessoas(vPessoa, 0, quantidadeDePessoas - 1, vLivro[codigoDoLivroParaSerDevolvido].codigo_pessoa_emprestado);
+        cout << "Voce confirma a devolucao ? (S/N): ";
+        cin >> respostaDoUsuario;
+        if(respostaDoUsuario == 'S'){
+            vLivro[codigoDoLivroParaSerDevolvido].codigo_pessoa_emprestado = 0;
+            cout << "Devolucao realizada com sucesso!";
         }
-        else{
-            cout << "Erro! um ou mais livros que voce digitou nao estao emprestados";
-        }
-    }
-    int i = 0, j = 0, k = 0; // i (Contador vLivrosS) j (Contador livroTemporario) k (Contador vLivroA)
-
-    //Funcao que fara a remocao dos livros da lista de livros Emprestados
-    if(osLivrosEstaoEmprestados){
-     for(;j < contT; i++){
-        if(vLivrosS[i].codigo != livroTemporario[j]){
-            vLivrosA[k].codigo = vLivrosS[i].codigo;
-            vLivrosA[k].codigo_autor = vLivrosS[i].codigo_autor;
-            vLivrosA[k].codigo_editora = vLivrosS[i].codigo_editora;
-            vLivrosA[k].codigo_genero = vLivrosS[i].codigo_genero;
-            vLivrosA[k].codigo_pessoa_emprestado = vLivrosS[i].codigo_pessoa_emprestado;
-            vLivrosA[k].data_ultimo_emprestimo = vLivrosS[i].data_ultimo_emprestimo;
-            strcpy(vLivrosA[k].nome, vLivrosS[i].nome);
-            vLivrosA[k].qtde_emprestada = vLivrosS[i].qtde_emprestada;
-            k++;
-        }
-        else{
-            j++;
-        }
-    }
-    while(i < contS){
-            vLivrosA[k].codigo = vLivrosS[i].codigo;
-            vLivrosA[k].codigo_autor = vLivrosS[i].codigo_autor;
-            vLivrosA[k].codigo_editora = vLivrosS[i].codigo_editora;
-            vLivrosA[k].codigo_genero = vLivrosS[i].codigo_genero;
-            vLivrosA[k].codigo_pessoa_emprestado = vLivrosS[i].codigo_pessoa_emprestado;
-            vLivrosA[k].data_ultimo_emprestimo = vLivrosS[i].data_ultimo_emprestimo;
-            strcpy(vLivrosA[k].nome, vLivrosS[i].nome);
-            vLivrosA[k].qtde_emprestada = vLivrosS[i].qtde_emprestada;
-            i++;
-            k++;
-        }
-        contA = k;
     }
 }
 
@@ -597,50 +556,85 @@ int main(){
         cout << "9- Mostrar Livros com Devolucao em atraso\n";
         cout << "0 - Encerrar\n";
         cin >> opcao;
+        system("cls");
         switch(opcao){
             case 1:
                 cout << "Voce escolheu Realizar a leitura das estruturas\n";
                 cout << "LEITURA DAS PESSOAS \n";
                 leituraDePessoas(vPessoa, quantidadeDePessoas);
+                system("cls");
                 cout << "LEITURA DAS EDITORAS \n";
                 leituraDeEditoras(vEditora, quantidadeDeEditoras);
+                system("cls");
                 cout << "LEITURA DOS AUTORES \n";
                 leituraDeAutores(vAutores, quantidadeDeAutores);
+                system("cls");
                 cout << "LEITURA DOS GENEROS \n";
                 leituraDeGeneros(vGeneros, quantidadeDeGeneros);
+                system("cls");
                 cout << "LEITURA DOS LIVROS \n";
                 leituraDeLivros(vLivros, quantidadeDeLivros, vEditora, quantidadeDeEditoras, vAutores, quantidadeDeAutores, vGeneros, quantidadeDeGeneros);
+                system("cls");
                 break;
             case 2:
                 cout << "Voce escolheu incluir novo registro na tabela de pessoas\n";
                 //Leitura das Pessoas que serao adicionadas
                 leituraDePessoas(vPessoaTemporario, quantidadeDePessoasParaSerAdicionado);
                 insercaoNaTabelaDePessoas(vPessoa, vPessoaTemporario, vPessoaAtualizado, quantidadeDePessoas, quantidadeDePessoasParaSerAdicionado, quantidadeDePessoasDepoisDeAdicionado);
+                cout << "Lista de Pessoas apos Adicao \n";
+                for(int cont = 0; cont < quantidadeDeLivrosDepoisDeAdicionado; cont++){
+                    cout << "Codigo: " << vPessoaAtualizado[cont].codigo << endl;
+                    cout << "Nome: " << vPessoaAtualizado[cont].nome << endl;
+                    cout << "Endereco: " << vPessoaAtualizado[cont].endereco << endl;
+                }
+                system("cls");
                 break;
             case 3:
                 cout << "Voce escolheu incluir novo registro na tabela de livros\n";
                 //Leitura dos livros que serao adicionados
                 leituraDeLivros(vLivroTemporario, quantidadeDeLivrosParaSerAdicionado, vEditora, quantidadeDeEditoras, vAutores, quantidadeDeAutores, vGeneros, quantidadeDeGeneros);
+                insercaoNaTabelaDeLivros(vLivros, vLivroTemporario, vLivroAtualizado, quantidadeDeLivros, quantidadeDeLivrosParaSerAdicionado, quantidadeDeLivrosDepoisDeAdicionado);
+                for(int cont = 0; cont < quantidadeDeLivrosDepoisDeAdicionado; cont++){
+                    cout << "Codigo: " << vLivroAtualizado[cont].codigo << endl;
+                    cout << "Nome: " << vLivroAtualizado[cont].nome << endl;
+                    cout << "Codigo da Editora: " << vLivroAtualizado[cont].codigo_editora << endl;
+                    cout << "Codigo do Autor: " << vLivroAtualizado[cont].codigo_autor << endl;
+                    cout << "Codigo do Genero: " << vLivroAtualizado[cont].codigo_genero << endl;
+                    cout << "Codigo da Pessoa Emprestado: " << vLivroAtualizado[cont].codigo_pessoa_emprestado << endl;
+                    cout << "Quantidade Emprestado: " << vLivroAtualizado[cont].qtde_emprestada << endl;
+                    cout << "Data do Ultimo Emprestimo: " << vLivroAtualizado[cont].data_ultimo_emprestimo.dia << "/" << vLivroAtualizado[cont].data_ultimo_emprestimo.mes << "/" << vLivroAtualizado[cont].data_ultimo_emprestimo.ano << endl;
+                }
+                system("cls");
                 break;
             case 4:
                 cout << "Voce escolheu realizar emprestimo de livro\n";
+                realizaEmprestimoLivro(vLivroAtualizado, vEditora, vAutores, vPessoaAtualizado, quantidadeDeLivrosDepoisDeAdicionado, quantidadeDeEditoras, quantidadeDeAutores, quantidadeDeAutores);
+                system("cls");
+                break;
             case 5:
                 cout << "Voce escolheu realizar devolucao do livro\n";
+                realizaDevolucaoLivro(vLivroAtualizado, vEditora, vAutores, quantidadeDeEditoras, quantidadeDeAutores, quantidadeDeLivrosDepoisDeAdicionado, vPessoaAtualizado, quantidadeDePessoasDepoisDeAdicionado);
+                system("cls");
                 break;
             case 6:
                 cout << "Voce escolheu realizar mostrar todos os livros emprestados\n";
                 mostraLivrosEmprestados(vLivroAtualizado, quantidadeDeLivrosDepoisDeAdicionado, vPessoaAtualizado, quantidadeDePessoasDepoisDeAdicionado);
+                system("cls");
                 break;
             case 7:
                 cout << "Voce escolheu mostrar os dados do livro mais emprestado\n";
                 mostraLivroMaisEmprestado(vLivroAtualizado, vEditora, vAutores, quantidadeDeLivrosDepoisDeAdicionado, quantidadeDeEditoras, quantidadeDeAutores);
+                system("cls");
                 break;
             case 8:
                 cout << "Voce escolheu mostrar os dados do livro menos emprestado\n";
                 mostraLivrosMenosEmprestados(vLivroAtualizado, vEditora, vAutores, quantidadeDeLivrosDepoisDeAdicionado, quantidadeDeEditoras, quantidadeDeAutores);
+                system("cls");
                 break;
             case 9:
                 cout << "Voce escolheu mostrar os livros com devolucao em atraso\n";
+                mostraDadosDeLivrosComDevolucaoEmAtraso(vLivroAtualizado, quantidadeDeLivrosDepoisDeAdicionado, diaDeHoje, vEditora, vAutores, quantidadeDeEditoras, quantidadeDeAutores);
+                system("cls");
                 break;
             case 0:
                 cout << "Encerrando o programa...\n";
