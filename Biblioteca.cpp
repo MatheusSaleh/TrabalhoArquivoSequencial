@@ -242,14 +242,14 @@ void inclusaoEmLivros(Livros vLivroS[], Livros vLivroT[], Livros vLivroA[], int 
 
     cout << "\n\nLista dos Registros de Livro No Arquivo Atualizado" << endl;
     for(int i = 0; i < contLivroAtualizado; i++){
-        cout << "\nCodigo: " << vLivroA[i].codigo;
+        cout << "\nCod.: " << vLivroA[i].codigo;
         cout << "\tNome: " << vLivroA[i].nome;
-        cout << "\tCodigo Editora: " << vLivroA[i].codigo_editora;
-        cout << "\tCodigo Autor: " << vLivroA[i].codigo_autor;
-        cout << "\tCodigo Genero: " << vLivroA[i].codigo_genero;
-        cout << "\tCodigo da Pessoa que emprestou: " << vLivroA[i].codigo_pessoa_emprestado;
-        cout << "\tQuantidade Emprestada: " << vLivroA[i].qtde_emprestada;
-        cout << "\tData Ultimo Emprestimo: " << vLivroA[i].data_ultimo_emprestimo.dia << "/" << vLivroA[i].data_ultimo_emprestimo.mes << "/" << vLivroA[i].data_ultimo_emprestimo.ano << "\n";
+        cout << "\tCod.Editora: " << vLivroA[i].codigo_editora;
+        cout << "\tCod.Autor: " << vLivroA[i].codigo_autor;
+        cout << "\tCod.Genero: " << vLivroA[i].codigo_genero;
+        cout << "\tCod.Pessoa: " << vLivroA[i].codigo_pessoa_emprestado;
+        cout << "\tQtd Emprestada: " << vLivroA[i].qtde_emprestada;
+        cout << "\tData Ult. Emp.: " << vLivroA[i].data_ultimo_emprestimo.dia << "/" << vLivroA[i].data_ultimo_emprestimo.mes << "/" << vLivroA[i].data_ultimo_emprestimo.ano << "\n";
     }
 }
 
