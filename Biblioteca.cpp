@@ -88,7 +88,7 @@ bool validaData(Data data)
 
 void leituraDePessoas(Pessoas vetPessoa[])
 {
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 3; i++)
     {
         cout << "\n\nCodigo da Pessoa " << (i+1) << ": ";
         cin >> vetPessoa[i].codigo;
@@ -102,10 +102,11 @@ void leituraDePessoas(Pessoas vetPessoa[])
 
 void leituraDeEditoras(Editoras vetEditora[])
 {
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 3; i++)
     {
         cout << "\n\nCodigo da Editora " << (i+1) << ": ";
         cin >> vetEditora[i].codigo;
+        cin.ignore();
         cout << "Nome: ";
         gets(vetEditora[i].nome);
     }
@@ -113,10 +114,11 @@ void leituraDeEditoras(Editoras vetEditora[])
 
 void leituraDeAutores(Autores vetAutor[])
 {
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 3; i++)
     {
         cout << "\n\nCodigo do Autor " << (i+1) << ": ";
         cin >> vetAutor[i].codigo;
+        cin.ignore();
         cout << "\nNome: ";
         gets(vetAutor[i].nome);
     }
@@ -124,101 +126,60 @@ void leituraDeAutores(Autores vetAutor[])
 
 void leituraDeGeneros(Generos vetGenero[])
 {
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 3; i++)
     {
         cout << "\n\nCodigo do Genero " << (i+1) << ": ";
         cin >> vetGenero[i].codigo;
+        cin.ignore();
         cout << "\nNome: ";
         gets(vetGenero[i].descricao);
     }
 }
 
-void leituraDeLivros(Livros vetLivro[])
+
+
+void inclusaoEmPessoas(Pessoas vPessoasS[], Pessoas vPessoasT[], Pessoas vPessoasA[], int quantidadeDePessoasInicial, int quantidadeDePessoasTemporario, int quantidadeDePessoasAtualizado)
 {
+    int contPessoaInicial = 0;
+    int contPessoaTemporario = 0;
+    int contPessoaAtualizado = 0;
 
-    bool dataValida = false;
-
-    for(int i = 0; i < 10; i++)
-    {
-        cout << "\n\nCodigo do Livro " << (i+1) << ": ";
-        cin >> vetLivro[i].codigo;
-        cout << "Nome do Livro: ";
-        gets(vetLivro[i].nome);
-        cout << "\nCodigo da Editora do Livro: ";
-        cin >> vetLivro[i].codigo_editora;
-        cout << "Codigo do Autor do Livro: ";
-        cin >> vetLivro[i].codigo_autor;
-        cout << "Codigo do Genero do Livro: ";
-        cin >> vetLivro[i].codigo_genero;
-        cout << "Codigo da Pessoa que emprestou o livro";
-        cin >> vetLivro[i].codigo_pessoa_emprestado;
-        cout << "Digite a quantidade emprestada do livro";
-        cin >> vetLivro[i].qtde_emprestada;
-        while(!dataValida)
-        {
-            cout << "Digite a data do ultimo emprestimo (DD/MM/AAAA): ";
-            char strData[11];
-            gets(strData);
-            sscanf(strData, "%d/%d/%d", &vetLivro[i].data_ultimo_emprestimo.dia, &vetLivro[i].data_ultimo_emprestimo.mes, &vetLivro[i].data_ultimo_emprestimo.ano);
-            if(validaData(vetLivro[i].data_ultimo_emprestimo))
-            {
-                dataValida = true;
-            }
-            else
-            {
-                cout << "Data invalida. Digite uma nova data. \n";
-            }
+    while((contPessoaInicial < quantidadeDePessoasInicial) && (contPessoaTemporario < quantidadeDePessoasTemporario)){
+        if(vPessoasS[contPessoaInicial].codigo < vPessoasT[contPessoaTemporario].codigo){
+            vPessoasA[contPessoaAtualizado].codigo = vPessoasS[contPessoaInicial].codigo;
+            strcpy(vPessoasA[contPessoaAtualizado].nome, vPessoasS[contPessoaInicial].nome);
+            strcpy(vPessoasA[contPessoaAtualizado].endereco, vPessoasS[contPessoaInicial].endereco);
+            contPessoaInicial++;
+        } else{
+            vPessoasA[contPessoaAtualizado].codigo = vPessoasT[contPessoaTemporario].codigo;
+            strcpy(vPessoasA[contPessoaAtualizado].nome, vPessoasT[contPessoaTemporario].nome);
+            strcpy(vPessoasA[contPessoaAtualizado].endereco, vPessoasT[contPessoaTemporario].endereco);
+            contPessoaTemporario++;
         }
+        contPessoaAtualizado++;
     }
-}
 
-void inclusaoEmPessoas(Pessoas vPessoasS[], int contS, Pessoas vPessoasT[], int contT, Pessoas vPessoasA[], int &contA)
-{
-    int i = 0, j = 0, k = 0;
-    for(; i< contS && j < contT; k++)
-    {
-        if(vPessoasS[i].codigo < vPessoasT[j].codigo)
-        {
-            vPessoasA[k].codigo = vPessoasS[i].codigo;
-            strcpy(vPessoasA[k].nome, vPessoasS[i].nome);
-            strcpy(vPessoasA[k].endereco, vPessoasS[i].endereco);
-            i++;
-        }
-        else
-        {
-            vPessoasA[k].codigo = vPessoasT[j].codigo;
-            strcpy(vPessoasA[k].nome, vPessoasT[j].nome);
-            strcpy(vPessoasA[k].endereco, vPessoasT[j].endereco);
-            j++;
-        }
+    while(contPessoaInicial < quantidadeDePessoasInicial){
+        vPessoasA[contPessoaAtualizado].codigo = vPessoasS[contPessoaInicial].codigo;
+        strcpy(vPessoasA[contPessoaAtualizado].nome, vPessoasS[contPessoaInicial].nome);
+        strcpy(vPessoasA[contPessoaAtualizado].endereco, vPessoasS[contPessoaInicial].endereco);
+        contPessoaInicial++;
+        contPessoaAtualizado++;
     }
-    while(i < contS)
-    {
-        vPessoasA[k].codigo = vPessoasS[i].codigo;
-        strcpy(vPessoasA[k].nome, vPessoasS[i].nome);
-        strcpy(vPessoasA[k].endereco, vPessoasS[i].endereco);
-        i++;
-        k++;
-    }
-    while(j < contT)
-    {
-        vPessoasA[k].codigo = vPessoasT[j].codigo;
-        strcpy(vPessoasA[k].nome, vPessoasT[j].nome);
-        strcpy(vPessoasA[k].endereco, vPessoasT[j].endereco);
-        j++;
-        k++;
-    }
-    contA = k;
-}
 
-void mostrarListaDePessoasDepoisDaInsercao(Pessoas vPessoasA[], int contA)
-{
-    cout << "\n\nLista dos Registros de Pessoas no Arquivo Atualizado" << endl;
-    for(int i = 0; i < contA; i++)
-    {
+    while(contPessoaTemporario < quantidadeDePessoasTemporario){
+        vPessoasA[contPessoaAtualizado].codigo = vPessoasT[contPessoaTemporario].codigo;
+        strcpy(vPessoasA[contPessoaAtualizado].nome, vPessoasT[contPessoaTemporario].nome);
+        strcpy(vPessoasA[contPessoaAtualizado].endereco, vPessoasT[contPessoaTemporario].endereco);
+        contPessoaTemporario++;
+        contPessoaAtualizado++;
+    }
+
+    cout << "\n\nLista dos Registros de Pessoa no Arquivo Atualizado " << endl;
+    for(int i = 0; i < contPessoaAtualizado; i++){
         cout << "\nCodigo: " << vPessoasA[i].codigo;
         cout << "\tNome: " << vPessoasA[i].nome;
-        cout << "\tEndereco: " << vPessoasA[i].endereco;
+        cout << "\tEndereco: " << vPessoasA[i].endereco << "\n";
     }
 }
 
@@ -299,7 +260,7 @@ void mostraListaDeLivrosDepoisDaInsercao(Livros livrosA[], int contA)
 
 void buscaNaTabelaDeEditoras(Editoras vEditora[], int cod)
 {
-    int i = 0, f = 10;
+    int i = 0, f = 3;
     int m = (i + f) / 2;
     for(; f >= i && cod != vEditora[m].codigo; m = (i + f) / 2)
     {
@@ -310,9 +271,9 @@ void buscaNaTabelaDeEditoras(Editoras vEditora[], int cod)
     }
     if(cod == vEditora[m].codigo)
     {
-        cout << "\n\n Editora Encontrada";
-        cout << "\nCodigo da Editora: " << vEditora[m].codigo;
-        cout << "\tNome: " << vEditora[m].nome;
+        cout << "\n\n Editora Encontrada\n";
+        cout << "\nCodigo da Editora: " << vEditora[m].codigo << "\n\n";
+        cout << "\tNome: " << vEditora[m].nome << "\n";
     }
     else
     {
@@ -322,7 +283,7 @@ void buscaNaTabelaDeEditoras(Editoras vEditora[], int cod)
 
 void buscaNaTabelaDeAutores(Autores vAutor[], int cod)
 {
-    int i = 0, f = 10;
+    int i = 0, f = 3;
     int m = (i + f) / 2;
     for(; f >= i && cod != vAutor[m].codigo; m = (i + f) / 2)
     {
@@ -334,18 +295,18 @@ void buscaNaTabelaDeAutores(Autores vAutor[], int cod)
     if(cod == vAutor[m].codigo)
     {
         cout << "\n\n Autor Encontrado";
-        cout << "\nCodigo do Autor: " << vAutor[m].codigo;
-        cout << "\tNome: " << vAutor[m].nome;
+        cout << "\nCodigo do Autor: " << vAutor[m].codigo << "\n\n";
+        cout << "\tNome: " << vAutor[m].nome << "\n";
     }
     else
     {
-        cout << "\n\n Autor nao encontrado ";
+        cout << "\n\n Autor nao encontrado " << "\n";
     }
 }
 
 void buscaNaTabelaDeGenero(Generos vGenero[], int cod)
 {
-    int i = 0, f = 10;
+    int i = 0, f = 3;
     int m = (i + f) / 2;
     for(; f >= i && cod != vGenero[m].codigo; m = (i + f) / 2)
     {
@@ -357,18 +318,18 @@ void buscaNaTabelaDeGenero(Generos vGenero[], int cod)
     if(cod == vGenero[m].codigo)
     {
         cout << "\n\n Genero Encontrado";
-        cout << "\nCodigo do Genero: " << vGenero[m].codigo;
-        cout << "\tNome: " << vGenero[m].descricao;
+        cout << "\nCodigo do Genero: " << vGenero[m].codigo << "\n\n";
+        cout << "\tNome: " << vGenero[m].descricao << "\n";
     }
     else
     {
-        cout << "\n\n Genero Nao Encontrado ";
+        cout << "\n\n Genero Nao Encontrado"  << "\n";
     }
 }
 
 Livros buscaNaTabelaDeLivro(Livros vLivro[], int cod)
 {
-    int i = 0, f = 10;
+    int i = 0, f = 3;
     int m = (i + f) / 2;
     for(; f >= i && cod != vLivro[m].codigo; m = (i + f ) / 2)
     {
@@ -380,24 +341,24 @@ Livros buscaNaTabelaDeLivro(Livros vLivro[], int cod)
     if(cod == vLivro[m].codigo)
     {
         cout << "\n\n Livro Encontrado";
-        cout << "\nNome: " << vLivro[m].nome;
-        cout << "\tCodigo Da Editora: " << vLivro[m].codigo_editora;
-        cout << "\tCodigo Do Autor: " << vLivro[m].codigo_autor;
-        cout << "\tCodigo do Genero: " << vLivro[m].codigo_genero;
-        cout << "\tCodigo da Pessoa que emprestou: " << vLivro[m].codigo_pessoa_emprestado;
-        cout << "\tQuantidade Emprestada: " << vLivro[m].qtde_emprestada;
-        cout << "\tData Do Ultimo Emprestimo: " << vLivro[m].data_ultimo_emprestimo.dia << "/" << vLivro[m].data_ultimo_emprestimo.mes << vLivro[m].data_ultimo_emprestimo.ano;
+        cout << "\nNome: " << vLivro[m].nome << "\n";
+        cout << "\tCodigo Da Editora: " << vLivro[m].codigo_editora << "\n";
+        cout << "\tCodigo Do Autor: " << vLivro[m].codigo_autor << "\n";
+        cout << "\tCodigo do Genero: " << vLivro[m].codigo_genero << "\n";
+        cout << "\tCodigo da Pessoa que emprestou: " << vLivro[m].codigo_pessoa_emprestado << "\n";
+        cout << "\tQuantidade Emprestada: " << vLivro[m].qtde_emprestada << "\n";
+        cout << "\tData Do Ultimo Emprestimo: " << vLivro[m].data_ultimo_emprestimo.dia << "/" << vLivro[m].data_ultimo_emprestimo.mes << vLivro[m].data_ultimo_emprestimo.ano << "\n";
         return vLivro[m];
     }
     else
     {
-        cout << "\n\n Livro nao encontrado";
+        cout << "\n\n Livro nao encontrado \n";
     }
 }
 
 void buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
 {
-    int i = 0, f = 10;
+    int i = 0, f = 3;
     int m = (i + f) / 2;
     for(; f >= i && cod != vPessoa[m].codigo; m = (i+f) / 2)
     {
@@ -408,13 +369,13 @@ void buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
     }
     if(cod == vPessoa[m].codigo)
     {
-        cout << "\n\n Pessoa Encontrada ";
-        cout << "\nNome: " << vPessoa[m].nome;
-        cout << "\tEndereco: " << vPessoa[m].endereco;
+        cout << "\n\n Pessoa Encontrada " << "\n";
+        cout << "\nNome: " << vPessoa[m].nome << "\n";
+        cout << "\tEndereco: " << vPessoa[m].endereco << "\n";
     }
     else
     {
-        cout << "\n\n Pessoa nao encontrada!";
+        cout << "\n\n Pessoa nao encontrada!" << "\n";
     }
 }
 
@@ -537,13 +498,65 @@ void mostraDadosDosLivroMaiseMenosEmprestado(Livros vLivro[], Editoras vEditora[
     //cout << "Quantidade de vezes que foi emprestado: " << livroMenosEmprestado.qtde_emprestada << "\n";
 }
 
+void leituraDeLivros(Livros vetLivro[], Editoras vEditora[], Autores vAutor[], Generos vGenero[])
+{
+    int codigoEditora;
+
+    for(int i = 0; i < 3; i++)
+    {
+        bool dataValida = false;
+
+        cout << "\n\nCodigo do Livro " << (i+1) << ": ";
+        cin >> vetLivro[i].codigo;
+        cin.ignore();
+        cout << "Nome do Livro: ";
+        gets(vetLivro[i].nome);
+        cout << "\nCodigo da Editora do Livro: ";
+        cin >> vetLivro[i].codigo_editora;
+        codigoEditora = vetLivro[i].codigo_editora;
+        cin.ignore();
+        buscaNaTabelaDeEditoras(vEditora, codigoEditora);
+        cout << "Codigo do Autor do Livro: ";
+        cin >> vetLivro[i].codigo_autor;
+        cin.ignore();
+        buscaNaTabelaDeAutores(vAutor, vetLivro[i].codigo_autor);
+        cout << "Codigo do Genero do Livro: ";
+        cin >> vetLivro[i].codigo_genero;
+        cin.ignore();
+        buscaNaTabelaDeGenero(vGenero, vetLivro[i].codigo_genero);
+        cout << "Codigo da Pessoa que emprestou o livro: ";
+        cin >> vetLivro[i].codigo_pessoa_emprestado;
+        cin.ignore();
+        cout << "Digite a quantidade emprestada do livro: ";
+        cin >> vetLivro[i].qtde_emprestada;
+        cin.ignore();
+
+        while(!dataValida)
+        {
+            cout << "Digite a data do ultimo emprestimo (DD/MM/AAAA): ";
+            char strData[11];
+            gets(strData);
+            sscanf(strData, "%d/%d/%d", &vetLivro[i].data_ultimo_emprestimo.dia, &vetLivro[i].data_ultimo_emprestimo.mes, &vetLivro[i].data_ultimo_emprestimo.ano);
+            if(validaData(vetLivro[i].data_ultimo_emprestimo))
+            {
+                dataValida = true;
+            }
+            else
+            {
+                cout << "Data invalida. Digite uma nova data. \n";
+            }
+        }
+    }
+}
+
+
 int main()
 {
-    Pessoas vPessoaS[10], vPessoaT[10], vPessoaA[20];
-    Livros vLivroS[10], vLivroT[10], vLivroA[20];
-    Editoras vEditoras[20];
-    Autores vAutores[20];
-    Generos vGeneros[20];
+    Pessoas vPessoaS[3], vPessoaT[3], vPessoaA[6];
+    Livros vLivroS[3], vLivroT[3], vLivroA[6];
+    Editoras vEditoras[3];
+    Autores vAutores[3];
+    Generos vGeneros[3];
     int opcao;
     int contPessoaS, contPessoaT, contPessoaA;
     int contLivroS, contLivroT, contLivroA;
@@ -562,33 +575,48 @@ int main()
         switch(opcao){
         case 1:
             cout << "Voce escolheu realizar leitura das estruturas \n";
+
             cout << "\n\nLeitura do Arquivo S de Pessoas";
             leituraDePessoas(vPessoaS);
+
             cout << "\n\nLeitura da Editoras";
             leituraDeEditoras(vEditoras);
+
+
             cout << "\n\nLeitura de Autores";
             leituraDeAutores(vAutores);
+
             cout << "\n\nLeitura de Generos";
             leituraDeGeneros(vGeneros);
+
             cout << "\n\nLeitura do Arquivo S de Livros";
-            leituraDeLivros(vLivroS);
+            leituraDeLivros(vLivroS, vEditoras, vAutores, vGeneros);
+
             break;
         case 2:
             cout << "Voce escolheu incluir novo registro na tabela de pessoas \n";
             cout << "\n\nLeitura do Arquivo T de Pessoas";
             leituraDePessoas(vPessoaT);
-            inclusaoEmPessoas(vPessoaS, contPessoaS, vPessoaT, contPessoaT, vPessoaA, contPessoaA);
+
+            inclusaoEmPessoas(vPessoaS, vPessoaT, vPessoaA, 3, 3, 6);
+
             break;
         case 3:
             cout << "Voce escolheu incluir novo registro na tabela de livros \n";
-            leituraDeLivros(vLivroT);
+            cout << "\n\nLeitura do Arquivo T de Livros";
+            leituraDeLivros(vLivroT, vEditoras, vAutores, vGeneros);
+
             inclusaoEmLivros(vLivroS, contLivroS, vLivroT, contLivroT, vLivroA, contLivroA);
+
+            mostraListaDeLivrosDepoisDaInsercao(vLivroA, contLivroA);
             break;
         case 4:
             cout << "Voce escolheu realizar emprestimo de livro \n";
+            realizaEmprestimoLivro(vLivroA, vEditoras, vAutores);
             break;
         case 5:
             cout << "Voce escolheu realizar devolucao de livro \n";
+            realizaDevolucaoLivro(vLivroA, vEditoras, vAutores, vPessoaA);
             break;
         case 6:
             cout << "Voce escolheu mostrar todos os livros emprestados \n";
