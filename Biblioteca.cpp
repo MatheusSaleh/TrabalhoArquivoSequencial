@@ -253,21 +253,6 @@ void inclusaoEmLivros(Livros vLivroS[], Livros vLivroT[], Livros vLivroA[], int 
     }
 }
 
-void mostraListaDeLivrosDepoisDaInsercao(Livros livrosA[], int contA)
-{
-    cout << "\n\nLista dos Livros no Arquivo Atualizado" << endl;
-    for(int i = 0; i < contA; i++)
-    {
-        cout << "\nCodigo: " << livrosA[i].codigo;
-        cout << "\tNome: " << livrosA[i].nome;
-        cout << "\tCodigo Editora: " << livrosA[i].codigo_editora;
-        cout << "\tCodigo Autor: " << livrosA[i].codigo_autor;
-        cout << "\tCodigo Genero: " << livrosA[i].codigo_genero;
-        cout << "\tCodigo da Pessoa que emprestou: " << livrosA[i].codigo_pessoa_emprestado;
-        cout << "\tQuantidade Emprestada: " << livrosA[i].qtde_emprestada;
-        cout << "\tData do Ultimo Emprestimo: " << livrosA[i].data_ultimo_emprestimo.dia << "/" << livrosA[i].data_ultimo_emprestimo.mes << "/" << livrosA[i].data_ultimo_emprestimo.ano;
-    }
-}
 
 Editoras buscaNaTabelaDeEditoras(Editoras vEditora[], int cod)
 {
@@ -370,7 +355,7 @@ Livros buscaNaTabelaDeLivro(Livros vLivro[], int cod)
     }
 }
 
-void buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
+Pessoas buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
 {
     int i = 0, f = 3;
     int m = (i + f) / 2;
@@ -386,6 +371,7 @@ void buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
         cout << "\n\n Pessoa Encontrada " << "\n";
         cout << "\nNome: " << vPessoa[m].nome << "\n";
         cout << "\tEndereco: " << vPessoa[m].endereco << "\n";
+        return vPessoa[m];
     }
     else
     {
@@ -622,7 +608,6 @@ int main()
 
             inclusaoEmLivros(vLivroS, vLivroT, vLivroA, 3, 3 , 6);
 
-            mostraListaDeLivrosDepoisDaInsercao(vLivroA, contLivroA);
             break;
         case 4:
             cout << "Voce escolheu realizar emprestimo de livro \n";
