@@ -183,63 +183,74 @@ void inclusaoEmPessoas(Pessoas vPessoasS[], Pessoas vPessoasT[], Pessoas vPessoa
     }
 }
 
-void inclusaoEmLivros(Livros livrosS[], int contS, Livros livrosT[], int contT, Livros livrosA[], int &contA)
+void inclusaoEmLivros(Livros vLivroS[], Livros vLivroT[], Livros vLivroA[], int quantidadeDeLivrosInicial, int quantidadeDeLivrosTemporario, int quantidadeDeLivrosAtualizado)
 {
-    int i = 0, j = 0, k = 0;
-    for(; i < contS && j < contT; k++)
-    {
-        if(livrosS[i].codigo < livrosT[j].codigo)
-        {
-            livrosA[k].codigo = livrosS[i].codigo;
-            strcpy(livrosA[k].nome, livrosS[i].nome);
-            livrosA[k].codigo_editora = livrosS[i].codigo_editora;
-            livrosA[k].codigo_autor = livrosS[i].codigo_autor;
-            livrosA[k].codigo_genero = livrosS[i].codigo_genero;
-            livrosA[k].codigo_pessoa_emprestado = livrosS[i].codigo_pessoa_emprestado;
-            livrosA[k].qtde_emprestada = livrosS[i].qtde_emprestada;
-            livrosA[k].data_ultimo_emprestimo = livrosS[i].data_ultimo_emprestimo;
-            i++;
+    int contLivroInicial = 0;
+    int contLivroTemporario = 0;
+    int contLivroAtualizado = 0;
+
+    while((contLivroInicial < quantidadeDeLivrosInicial) && (contLivroTemporario < quantidadeDeLivrosTemporario)){
+        if(vLivroS[contLivroInicial].codigo < vLivroT[contLivroTemporario].codigo){
+            vLivroA[contLivroAtualizado].codigo = vLivroS[contLivroInicial].codigo;
+            strcpy(vLivroA[contLivroAtualizado].nome, vLivroS[contLivroInicial].nome);
+            vLivroA[contLivroAtualizado].codigo_editora = vLivroS[contLivroInicial].codigo_editora;
+            vLivroA[contLivroAtualizado].codigo_autor = vLivroS[contLivroInicial].codigo_autor;
+            vLivroA[contLivroAtualizado].codigo_genero = vLivroS[contLivroInicial].codigo_genero;
+            vLivroA[contLivroAtualizado].codigo_pessoa_emprestado = vLivroS[contLivroInicial].codigo_pessoa_emprestado;
+            vLivroA[contLivroAtualizado].qtde_emprestada = vLivroS[contLivroInicial].qtde_emprestada;
+            vLivroA[contLivroAtualizado].data_ultimo_emprestimo = vLivroS[contLivroInicial].data_ultimo_emprestimo;
+            contLivroInicial++;
+        } else{
+            vLivroA[contLivroAtualizado].codigo = vLivroT[contLivroTemporario].codigo;
+            strcpy(vLivroA[contLivroAtualizado].nome, vLivroT[contLivroTemporario].nome);
+            vLivroA[contLivroAtualizado].codigo_editora = vLivroT[contLivroTemporario].codigo_editora;
+            vLivroA[contLivroAtualizado].codigo_autor = vLivroT[contLivroTemporario].codigo_autor;
+            vLivroA[contLivroAtualizado].codigo_genero = vLivroT[contLivroTemporario].codigo_genero;
+            vLivroA[contLivroAtualizado].codigo_pessoa_emprestado = vLivroT[contLivroTemporario].codigo_pessoa_emprestado;
+            vLivroA[contLivroAtualizado].qtde_emprestada = vLivroT[contLivroTemporario].qtde_emprestada;
+            vLivroA[contLivroAtualizado].data_ultimo_emprestimo = vLivroT[contLivroTemporario].data_ultimo_emprestimo;
+            contLivroTemporario++;
         }
-        else
-        {
-            livrosA[k].codigo = livrosT[j].codigo;
-            strcpy(livrosA[k].nome, livrosT[j].nome);
-            livrosA[k].codigo_editora = livrosT[j].codigo_editora;
-            livrosA[k].codigo_autor = livrosT[j].codigo_autor;
-            livrosA[k].codigo_genero = livrosT[j].codigo_genero;
-            livrosA[k].codigo_pessoa_emprestado = livrosT[j].codigo_pessoa_emprestado;
-            livrosA[k].qtde_emprestada = livrosT[j].qtde_emprestada;
-            livrosA[k].data_ultimo_emprestimo = livrosT[j].data_ultimo_emprestimo;
-            j++;
-        }
+        contLivroAtualizado++;
     }
-    while(i < contS)
-    {
-        livrosA[k].codigo = livrosS[i].codigo;
-        strcpy(livrosA[k].nome, livrosS[i].nome);
-        livrosA[k].codigo_editora = livrosS[i].codigo_editora;
-        livrosA[k].codigo_autor = livrosS[i].codigo_autor;
-        livrosA[k].codigo_genero = livrosS[i].codigo_genero;
-        livrosA[k].codigo_pessoa_emprestado = livrosS[i].codigo_pessoa_emprestado;
-        livrosA[k].qtde_emprestada = livrosS[i].qtde_emprestada;
-        livrosA[k].data_ultimo_emprestimo = livrosS[i].data_ultimo_emprestimo;
-        i++;
-        k++;
+
+    while(contLivroInicial < quantidadeDeLivrosInicial){
+        vLivroA[contLivroAtualizado].codigo = vLivroS[contLivroInicial].codigo;
+        strcpy(vLivroA[contLivroAtualizado].nome, vLivroS[contLivroInicial].nome);
+        vLivroA[contLivroAtualizado].codigo_editora = vLivroS[contLivroInicial].codigo_editora;
+        vLivroA[contLivroAtualizado].codigo_autor = vLivroS[contLivroInicial].codigo_autor;
+        vLivroA[contLivroAtualizado].codigo_genero = vLivroS[contLivroInicial].codigo_genero;
+        vLivroA[contLivroAtualizado].codigo_pessoa_emprestado = vLivroS[contLivroInicial].codigo_pessoa_emprestado;
+        vLivroA[contLivroAtualizado].qtde_emprestada = vLivroS[contLivroInicial].qtde_emprestada;
+        vLivroA[contLivroAtualizado].data_ultimo_emprestimo = vLivroT[contLivroTemporario].data_ultimo_emprestimo;
+        contLivroInicial++;
+        contLivroAtualizado++;
     }
-    while(j < contT)
-    {
-        livrosA[k].codigo = livrosT[j].codigo;
-        strcpy(livrosA[k].nome, livrosT[j].nome);
-        livrosA[k].codigo_editora = livrosT[j].codigo_editora;
-        livrosA[k].codigo_autor = livrosT[j].codigo_autor;
-        livrosA[k].codigo_genero = livrosT[j].codigo_genero;
-        livrosA[k].codigo_pessoa_emprestado = livrosT[j].codigo_pessoa_emprestado;
-        livrosA[k].qtde_emprestada = livrosT[j].qtde_emprestada;
-        livrosA[k].data_ultimo_emprestimo = livrosT[j].data_ultimo_emprestimo;
-        j++;
-        k++;
+
+    while(contLivroTemporario < quantidadeDeLivrosTemporario){
+        vLivroA[contLivroAtualizado].codigo = vLivroT[contLivroTemporario].codigo;
+        strcpy(vLivroA[contLivroAtualizado].nome, vLivroT[contLivroTemporario].nome);
+        vLivroA[contLivroAtualizado].codigo_editora = vLivroT[contLivroTemporario].codigo_editora;
+        vLivroA[contLivroAtualizado].codigo_autor = vLivroT[contLivroTemporario].codigo_autor;
+        vLivroA[contLivroAtualizado].codigo_genero = vLivroT[contLivroTemporario].codigo_genero;
+        vLivroA[contLivroAtualizado].codigo_pessoa_emprestado = vLivroT[contLivroTemporario].codigo_pessoa_emprestado;
+        vLivroA[contLivroAtualizado].qtde_emprestada = vLivroT[contLivroTemporario].qtde_emprestada;
+        vLivroA[contLivroAtualizado].data_ultimo_emprestimo = vLivroT[contLivroTemporario].data_ultimo_emprestimo;
+        contLivroTemporario++;
+        contLivroAtualizado++;
     }
-    contA = k;
+
+    cout << "\n\nLista dos Registros de Livro No Arquivo Atualizado" << endl;
+    for(int i = 0; i < contLivroAtualizado; i++){
+        cout << "\nCodigo: " << vLivroA[i].codigo;
+        cout << "\tNome: " << vLivroA[i].nome;
+        cout << "\tCodigo Editora: " << vLivroA[i].codigo_editora;
+        cout << "\tCodigo Autor: " << vLivroA[i].codigo_autor;
+        cout << "\tCodigo Genero: " << vLivroA[i].codigo_genero;
+        cout << "\tCodigo da Pessoa que emprestou: " << vLivroA[i].codigo_pessoa_emprestado;
+        cout << "\tQuantidade Emprestada: " << vLivroA[i].qtde_emprestada;
+        cout << "\tData Ultimo Emprestimo: " << vLivroA[i].data_ultimo_emprestimo.dia << "/" << vLivroA[i].data_ultimo_emprestimo.mes << "/" << vLivroA[i].data_ultimo_emprestimo.ano << "\n";
+    }
 }
 
 void mostraListaDeLivrosDepoisDaInsercao(Livros livrosA[], int contA)
@@ -606,7 +617,7 @@ int main()
             cout << "\n\nLeitura do Arquivo T de Livros";
             leituraDeLivros(vLivroT, vEditoras, vAutores, vGeneros);
 
-            inclusaoEmLivros(vLivroS, contLivroS, vLivroT, contLivroT, vLivroA, contLivroA);
+            inclusaoEmLivros(vLivroS, vLivroT, vLivroA, 3, 3 , 6);
 
             mostraListaDeLivrosDepoisDaInsercao(vLivroA, contLivroA);
             break;
