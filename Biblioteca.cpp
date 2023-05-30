@@ -269,7 +269,7 @@ void mostraListaDeLivrosDepoisDaInsercao(Livros livrosA[], int contA)
     }
 }
 
-void buscaNaTabelaDeEditoras(Editoras vEditora[], int cod)
+Editoras buscaNaTabelaDeEditoras(Editoras vEditora[], int cod)
 {
     int i = 0, f = 3;
     int m = (i + f) / 2;
@@ -285,6 +285,7 @@ void buscaNaTabelaDeEditoras(Editoras vEditora[], int cod)
         cout << "\n\n Editora Encontrada\n";
         cout << "\nCodigo da Editora: " << vEditora[m].codigo << "\n\n";
         cout << "\tNome: " << vEditora[m].nome << "\n";
+        return vEditora[m];
     }
     else
     {
@@ -292,7 +293,7 @@ void buscaNaTabelaDeEditoras(Editoras vEditora[], int cod)
     }
 }
 
-void buscaNaTabelaDeAutores(Autores vAutor[], int cod)
+Autores buscaNaTabelaDeAutores(Autores vAutor[], int cod)
 {
     int i = 0, f = 3;
     int m = (i + f) / 2;
@@ -308,6 +309,7 @@ void buscaNaTabelaDeAutores(Autores vAutor[], int cod)
         cout << "\n\n Autor Encontrado";
         cout << "\nCodigo do Autor: " << vAutor[m].codigo << "\n\n";
         cout << "\tNome: " << vAutor[m].nome << "\n";
+        return vAutor[m];
     }
     else
     {
@@ -315,7 +317,7 @@ void buscaNaTabelaDeAutores(Autores vAutor[], int cod)
     }
 }
 
-void buscaNaTabelaDeGenero(Generos vGenero[], int cod)
+Generos buscaNaTabelaDeGenero(Generos vGenero[], int cod)
 {
     int i = 0, f = 3;
     int m = (i + f) / 2;
@@ -331,6 +333,7 @@ void buscaNaTabelaDeGenero(Generos vGenero[], int cod)
         cout << "\n\n Genero Encontrado";
         cout << "\nCodigo do Genero: " << vGenero[m].codigo << "\n\n";
         cout << "\tNome: " << vGenero[m].descricao << "\n";
+        return vGenero[m];
     }
     else
     {
