@@ -379,42 +379,40 @@ Pessoas buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
     }
 }
 
-void realizaEmprestimoLivro(Livros vLivro[], Editoras vEditoras[], Autores vAutores[])
+void realizaEmprestimoLivro(Livros vLivro[], Editoras vEditoras[], Autores vAutores[], Pessoas vPessoa[])
 {
-    int codigoDoLivroDesejado;
-    int codigoDaPessoaQueIraEmprestaroLivro;
-    Livros livroParaEmprestar;
-    int dataValida = false;
+    int codigoDoLivroQueVaiSerEmprestado;
+    int codigoDaPessoaQueVaiEmprestarLivro;
+
+    bool dataValida = false;
+
     cout << "Digite o codigo do livro que voce deseja emprestar: ";
-    cin >> codigoDoLivroDesejado;
-    livroParaEmprestar = buscaNaTabelaDeLivro(vLivro, codigoDoLivroDesejado);
-    cout << "\nO livro que voce quer emprestar e: " << livroParaEmprestar.nome << "\n";
-    buscaNaTabelaDeEditoras(vEditoras, livroParaEmprestar.codigo_editora);
-    buscaNaTabelaDeAutores(vAutores, livroParaEmprestar.codigo_autor);
-    if(livroParaEmprestar.codigo_pessoa_emprestado == 0)
-    {
-        cout << "Digite o codigo da pessoa que ira emprestar o livro: ";
-        cin >> codigoDaPessoaQueIraEmprestaroLivro;
-        livroParaEmprestar.codigo_pessoa_emprestado = codigoDaPessoaQueIraEmprestaroLivro;
-        livroParaEmprestar.qtde_emprestada++;
-        while(!dataValida)
-        {
-            cout << "Digite a data em que se esta realizando o emprestimo: (DD/MM/AAAA) ";
+    cin >> codigoDoLivroQueVaiSerEmprestado;
+
+    Livros livroQueVaiSerEmprestado = buscaNaTabelaDeLivro(vLivro, codigoDoLivroQueVaiSerEmprestado);
+    Editoras editoraDoLivroQueVaiSerEmprestado = buscaNaTabelaDeEditoras(vEditoras, livroQueVaiSerEmprestado.codigo_editora);
+    Autores autorDoLivroQueVaiSerEmprestado = buscaNaTabelaDeAutores(vAutores, livroQueVaiSerEmprestado.codigo_autor);
+
+    cout << "\n\nO Livro que voce esta emprestando e " << livroQueVaiSerEmprestado.nome << " Do Autor " << autorDoLivroQueVaiSerEmprestado.nome << " Da Editora " << editoraDoLivroQueVaiSerEmprestado.nome << "\n";
+
+    if(livroQueVaiSerEmprestado.codigo_pessoa_emprestado == 0){
+        cout << "\nEste Livro esta disponivel para emprestimo! \n";
+        cout << "Digite o codigo da pessoa que esta emprestando o livro: ";
+        cin >> codigoDaPessoaQueVaiEmprestarLivro;
+        Pessoas pessoaQueVaiEmprestaroLivro = buscaNaTabelaDePessoa(vPessoa, codigoDaPessoaQueVaiEmprestarLivro);
+        cout << "\nO Livro esta sendo emprestado para " << pessoaQueVaiEmprestaroLivro.nome << "\n";
+        livroQueVaiSerEmprestado.codigo_pessoa_emprestado = codigoDaPessoaQueVaiEmprestarLivro;
+        livroQueVaiSerEmprestado.qtde_emprestada++;
+        while(!dataValida){
+            cout << "Digite a data em que se esta realizando o emprestimo (DD/MM/AAAA) :";
             char strData[11];
-            sscanf(strData, "%d/%d/%d", &livroParaEmprestar.data_ultimo_emprestimo.dia, &livroParaEmprestar.data_ultimo_emprestimo.mes, &livroParaEmprestar.data_ultimo_emprestimo.ano);
-            if(validaData(livroParaEmprestar.data_ultimo_emprestimo))
-            {
+            gets(strData);
+            sscanf(strData, "%d/%d/%d", &livroQueVaiSerEmprestado.data_ultimo_emprestimo.dia, &livroQueVaiSerEmprestado.data_ultimo_emprestimo.mes, &livroQueVaiSerEmprestado.data_ultimo_emprestimo.ano);
+            if(validaData(livroQueVaiSerEmprestado.data_ultimo_emprestimo))
                 dataValida = true;
-            }
             else
-            {
-                cout << "Data Invalida. Digite uma nova Data. \n";
-            }
+                cout << "Data invalida. Digite uma nova data. \n";
         }
-    }
-    else
-    {
-        cout << "Livro Indisponivel para emprestimo, o livro estara disponivel novamente em : ";
     }
 }
 
@@ -611,7 +609,7 @@ int main()
             break;
         case 4:
             cout << "Voce escolheu realizar emprestimo de livro \n";
-            realizaEmprestimoLivro(vLivroA, vEditoras, vAutores);
+            realizaEmprestimoLivro(vLivroA, vEditoras, vAutores, vPessoaA);
             break;
         case 5:
             cout << "Voce escolheu realizar devolucao de livro \n";
