@@ -1,6 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <string.h>
+#include <ctime>
 
 using namespace std;
 
@@ -144,13 +145,17 @@ void inclusaoEmPessoas(Pessoas vPessoasS[], Pessoas vPessoasT[], Pessoas vPessoa
     int contPessoaTemporario = 0;
     int contPessoaAtualizado = 0;
 
-    while((contPessoaInicial < quantidadeDePessoasInicial) && (contPessoaTemporario < quantidadeDePessoasTemporario)){
-        if(vPessoasS[contPessoaInicial].codigo < vPessoasT[contPessoaTemporario].codigo){
+    while((contPessoaInicial < quantidadeDePessoasInicial) && (contPessoaTemporario < quantidadeDePessoasTemporario))
+    {
+        if(vPessoasS[contPessoaInicial].codigo < vPessoasT[contPessoaTemporario].codigo)
+        {
             vPessoasA[contPessoaAtualizado].codigo = vPessoasS[contPessoaInicial].codigo;
             strcpy(vPessoasA[contPessoaAtualizado].nome, vPessoasS[contPessoaInicial].nome);
             strcpy(vPessoasA[contPessoaAtualizado].endereco, vPessoasS[contPessoaInicial].endereco);
             contPessoaInicial++;
-        } else{
+        }
+        else
+        {
             vPessoasA[contPessoaAtualizado].codigo = vPessoasT[contPessoaTemporario].codigo;
             strcpy(vPessoasA[contPessoaAtualizado].nome, vPessoasT[contPessoaTemporario].nome);
             strcpy(vPessoasA[contPessoaAtualizado].endereco, vPessoasT[contPessoaTemporario].endereco);
@@ -159,7 +164,8 @@ void inclusaoEmPessoas(Pessoas vPessoasS[], Pessoas vPessoasT[], Pessoas vPessoa
         contPessoaAtualizado++;
     }
 
-    while(contPessoaInicial < quantidadeDePessoasInicial){
+    while(contPessoaInicial < quantidadeDePessoasInicial)
+    {
         vPessoasA[contPessoaAtualizado].codigo = vPessoasS[contPessoaInicial].codigo;
         strcpy(vPessoasA[contPessoaAtualizado].nome, vPessoasS[contPessoaInicial].nome);
         strcpy(vPessoasA[contPessoaAtualizado].endereco, vPessoasS[contPessoaInicial].endereco);
@@ -167,7 +173,8 @@ void inclusaoEmPessoas(Pessoas vPessoasS[], Pessoas vPessoasT[], Pessoas vPessoa
         contPessoaAtualizado++;
     }
 
-    while(contPessoaTemporario < quantidadeDePessoasTemporario){
+    while(contPessoaTemporario < quantidadeDePessoasTemporario)
+    {
         vPessoasA[contPessoaAtualizado].codigo = vPessoasT[contPessoaTemporario].codigo;
         strcpy(vPessoasA[contPessoaAtualizado].nome, vPessoasT[contPessoaTemporario].nome);
         strcpy(vPessoasA[contPessoaAtualizado].endereco, vPessoasT[contPessoaTemporario].endereco);
@@ -176,7 +183,8 @@ void inclusaoEmPessoas(Pessoas vPessoasS[], Pessoas vPessoasT[], Pessoas vPessoa
     }
 
     cout << "\n\nLista dos Registros de Pessoa no Arquivo Atualizado " << endl;
-    for(int i = 0; i < contPessoaAtualizado; i++){
+    for(int i = 0; i < contPessoaAtualizado; i++)
+    {
         cout << "\nCodigo: " << vPessoasA[i].codigo;
         cout << "\tNome: " << vPessoasA[i].nome;
         cout << "\tEndereco: " << vPessoasA[i].endereco << "\n";
@@ -189,8 +197,10 @@ void inclusaoEmLivros(Livros vLivroS[], Livros vLivroT[], Livros vLivroA[], int 
     int contLivroTemporario = 0;
     int contLivroAtualizado = 0;
 
-    while((contLivroInicial < quantidadeDeLivrosInicial) && (contLivroTemporario < quantidadeDeLivrosTemporario)){
-        if(vLivroS[contLivroInicial].codigo < vLivroT[contLivroTemporario].codigo){
+    while((contLivroInicial < quantidadeDeLivrosInicial) && (contLivroTemporario < quantidadeDeLivrosTemporario))
+    {
+        if(vLivroS[contLivroInicial].codigo < vLivroT[contLivroTemporario].codigo)
+        {
             vLivroA[contLivroAtualizado].codigo = vLivroS[contLivroInicial].codigo;
             strcpy(vLivroA[contLivroAtualizado].nome, vLivroS[contLivroInicial].nome);
             vLivroA[contLivroAtualizado].codigo_editora = vLivroS[contLivroInicial].codigo_editora;
@@ -200,7 +210,9 @@ void inclusaoEmLivros(Livros vLivroS[], Livros vLivroT[], Livros vLivroA[], int 
             vLivroA[contLivroAtualizado].qtde_emprestada = vLivroS[contLivroInicial].qtde_emprestada;
             vLivroA[contLivroAtualizado].data_ultimo_emprestimo = vLivroS[contLivroInicial].data_ultimo_emprestimo;
             contLivroInicial++;
-        } else{
+        }
+        else
+        {
             vLivroA[contLivroAtualizado].codigo = vLivroT[contLivroTemporario].codigo;
             strcpy(vLivroA[contLivroAtualizado].nome, vLivroT[contLivroTemporario].nome);
             vLivroA[contLivroAtualizado].codigo_editora = vLivroT[contLivroTemporario].codigo_editora;
@@ -214,7 +226,8 @@ void inclusaoEmLivros(Livros vLivroS[], Livros vLivroT[], Livros vLivroA[], int 
         contLivroAtualizado++;
     }
 
-    while(contLivroInicial < quantidadeDeLivrosInicial){
+    while(contLivroInicial < quantidadeDeLivrosInicial)
+    {
         vLivroA[contLivroAtualizado].codigo = vLivroS[contLivroInicial].codigo;
         strcpy(vLivroA[contLivroAtualizado].nome, vLivroS[contLivroInicial].nome);
         vLivroA[contLivroAtualizado].codigo_editora = vLivroS[contLivroInicial].codigo_editora;
@@ -227,7 +240,8 @@ void inclusaoEmLivros(Livros vLivroS[], Livros vLivroT[], Livros vLivroA[], int 
         contLivroAtualizado++;
     }
 
-    while(contLivroTemporario < quantidadeDeLivrosTemporario){
+    while(contLivroTemporario < quantidadeDeLivrosTemporario)
+    {
         vLivroA[contLivroAtualizado].codigo = vLivroT[contLivroTemporario].codigo;
         strcpy(vLivroA[contLivroAtualizado].nome, vLivroT[contLivroTemporario].nome);
         vLivroA[contLivroAtualizado].codigo_editora = vLivroT[contLivroTemporario].codigo_editora;
@@ -241,7 +255,8 @@ void inclusaoEmLivros(Livros vLivroS[], Livros vLivroT[], Livros vLivroA[], int 
     }
 
     cout << "\n\nLista dos Registros de Livro No Arquivo Atualizado" << endl;
-    for(int i = 0; i < contLivroAtualizado; i++){
+    for(int i = 0; i < contLivroAtualizado; i++)
+    {
         cout << "\nCod.: " << vLivroA[i].codigo;
         cout << "\tNome: " << vLivroA[i].nome;
         cout << "\tCod.Editora: " << vLivroA[i].codigo_editora;
@@ -379,123 +394,6 @@ Pessoas buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
     }
 }
 
-void realizaEmprestimoLivro(Livros vLivro[], Editoras vEditoras[], Autores vAutores[], Pessoas vPessoa[])
-{
-    int codigoDoLivroQueVaiSerEmprestado;
-    int codigoDaPessoaQueVaiEmprestarLivro;
-
-    bool dataValida = false;
-
-    cout << "Digite o codigo do livro que voce deseja emprestar: ";
-    cin >> codigoDoLivroQueVaiSerEmprestado;
-
-    Livros livroQueVaiSerEmprestado = buscaNaTabelaDeLivro(vLivro, codigoDoLivroQueVaiSerEmprestado);
-    Editoras editoraDoLivroQueVaiSerEmprestado = buscaNaTabelaDeEditoras(vEditoras, livroQueVaiSerEmprestado.codigo_editora);
-    Autores autorDoLivroQueVaiSerEmprestado = buscaNaTabelaDeAutores(vAutores, livroQueVaiSerEmprestado.codigo_autor);
-
-    cout << "\n\nO Livro que voce esta emprestando e " << livroQueVaiSerEmprestado.nome << " Do Autor " << autorDoLivroQueVaiSerEmprestado.nome << " Da Editora " << editoraDoLivroQueVaiSerEmprestado.nome << "\n";
-
-    if(livroQueVaiSerEmprestado.codigo_pessoa_emprestado == 0){
-        cout << "\nEste Livro esta disponivel para emprestimo! \n";
-        cout << "Digite o codigo da pessoa que esta emprestando o livro: ";
-        cin >> codigoDaPessoaQueVaiEmprestarLivro;
-        Pessoas pessoaQueVaiEmprestaroLivro = buscaNaTabelaDePessoa(vPessoa, codigoDaPessoaQueVaiEmprestarLivro);
-        cout << "\nO Livro esta sendo emprestado para " << pessoaQueVaiEmprestaroLivro.nome << "\n";
-        livroQueVaiSerEmprestado.codigo_pessoa_emprestado = codigoDaPessoaQueVaiEmprestarLivro;
-        livroQueVaiSerEmprestado.qtde_emprestada++;
-        while(!dataValida){
-            cout << "Digite a data em que se esta realizando o emprestimo (DD/MM/AAAA) :";
-            char strData[11];
-            gets(strData);
-            sscanf(strData, "%d/%d/%d", &livroQueVaiSerEmprestado.data_ultimo_emprestimo.dia, &livroQueVaiSerEmprestado.data_ultimo_emprestimo.mes, &livroQueVaiSerEmprestado.data_ultimo_emprestimo.ano);
-            if(validaData(livroQueVaiSerEmprestado.data_ultimo_emprestimo))
-                dataValida = true;
-            else
-                cout << "Data invalida. Digite uma nova data. \n";
-        }
-    }
-}
-
-void realizaDevolucaoLivro(Livros vLivro[], Editoras vEditora[], Autores vAutores[], Pessoas vPessoas[])
-{
-    char respConfirmacaoDevolucao;
-    int codigoDoLivroParaSerDevolvido;
-    Livros livroParaDevolver;
-    livroParaDevolver = buscaNaTabelaDeLivro(vLivro, codigoDoLivroParaSerDevolvido);
-    buscaNaTabelaDeEditoras(vEditora, livroParaDevolver.codigo_editora);
-    buscaNaTabelaDeAutores(vAutores, livroParaDevolver.codigo_autor);
-    if(livroParaDevolver.codigo_pessoa_emprestado != 0)
-    {
-        cout << "Nome do Livro: " << livroParaDevolver.nome << "\n";
-        buscaNaTabelaDePessoa(vPessoas, livroParaDevolver.codigo_pessoa_emprestado);
-        cout << "Voce confirma a devolucao ? (S para Sim/ N para Nao): \n";
-        if(respConfirmacaoDevolucao == 'S')
-        {
-            cout << "Devolucao realizada com sucesso! \n";
-            livroParaDevolver.codigo_pessoa_emprestado = 0;
-        }
-        else
-        {
-            cout << "Devolucao nao realizada! \n";
-        }
-    }
-    else
-    {
-        cout << "Nao e possivel devolver um livro que nao foi emprestado!";
-    }
-}
-
-void mostraLivrosEmprestados(Livros vLivro[], Pessoas vPessoa[], int quantidadeDeLivros)
-{
-    cout << "LIVROS EMPRESTADO: \n";
-    int cont = 0;
-    int quantidadeDeLivrosEmprestados = 0;
-    int quantidadeDeLivrosDisponiveisParaEmprestimo = 0;
-    while(cont < quantidadeDeLivros)
-    {
-        if(vLivro[cont].codigo_pessoa_emprestado != 0)
-        {
-            cout << "Codigo do Livro: " << vLivro[cont].codigo << "\n";
-            cout << "Nome do Livro: " << vLivro[cont].nome << "\n";
-            buscaNaTabelaDePessoa(vPessoa, vLivro[cont].codigo_pessoa_emprestado);
-            quantidadeDeLivrosEmprestados++;
-        }
-        else
-        {
-            quantidadeDeLivrosDisponiveisParaEmprestimo++;
-        }
-        cont++;
-    }
-}
-
-void mostraDadosDosLivroMaiseMenosEmprestado(Livros vLivro[], Editoras vEditora[], Autores vAutor[], int quantidadeDeLivros){
-    Livros livroMaisEmprestado = vLivro[0];
-    Livros livroMenosEmprestado = vLivro[0];
-
-    for(int cont = 0; cont < quantidadeDeLivros; cont++){
-        if(vLivro[cont].qtde_emprestada > livroMaisEmprestado.qtde_emprestada){
-            livroMaisEmprestado = vLivro[cont];
-        }
-        if(vLivro[cont].qtde_emprestada < livroMenosEmprestado.qtde_emprestada){
-            livroMenosEmprestado = vLivro[cont];
-        }
-    }
-
-    cout << "LIVRO MAIS EMPRESTADO: /n";
-    cout << "Codigo: " << livroMaisEmprestado.codigo << "\n";
-    cout << "Nome do Livro: " << livroMaisEmprestado.nome << "\n";
-    //buscaNaTabelaDeEditoras(livroMaisEmprestado.codigo_editora);
-    //buscaNaTabelaDeAutores(livroMaisEmprestado.codigo_autor);
-    cout << "Quantidade de vezes que foi emprestado: " << livroMaisEmprestado.qtde_emprestada << "\n";
-
-    cout << "LIVRO MENOS EMPRESTADO: /n";
-    //cout << "Codigo: " << livroMenosEmprestado.nome << "\n";
-    //cout << "Nome do Livro: " < livroMenosEmprestado.nome << "\n";
-   // buscaNaTabelaDeEditoras(livroMenosEmprestado, livroMenosEmprestado.codigo_editora);
-   // buscaNaTabelaDeAutores(livroMaisEmprestado, livroMenosEmprestado.codigo_autor);
-    //cout << "Quantidade de vezes que foi emprestado: " << livroMenosEmprestado.qtde_emprestada << "\n";
-}
-
 void leituraDeLivros(Livros vetLivro[], Editoras vEditora[], Autores vAutor[], Generos vGenero[])
 {
     int codigoEditora;
@@ -547,6 +445,49 @@ void leituraDeLivros(Livros vetLivro[], Editoras vEditora[], Autores vAutor[], G
     }
 }
 
+void realizarEmprestimo(Livros* livros, int codigoPessoa, int codigoLivro)
+{
+    for (int i = 0; i < 10; i++) {
+        if (livros[i].codigo == codigoLivro) {
+            if (livros[i].codigo_pessoa_emprestado == 0) {
+                livros[i].codigo_pessoa_emprestado = codigoPessoa;
+                livros[i].qtde_emprestada += 1;
+
+                // Obter a data atual
+                time_t now = time(nullptr);
+                tm* localTime = localtime(&now);
+
+                // Preencher a data do último empréstimo
+                livros[i].data_ultimo_emprestimo.dia = localTime->tm_mday;
+                livros[i].data_ultimo_emprestimo.mes = localTime->tm_mon + 1;
+                livros[i].data_ultimo_emprestimo.ano = localTime->tm_year + 1900;
+
+                std::cout << "Empréstimo realizado com sucesso!" << std::endl;
+
+                cout << "\n\n LISTA DE LIVRO DEPOIS DO EMPRESTIMO\n";
+                for(int i = 0; i < 6; i++){
+                    cout << "\nCod.: " << livros[i].codigo;
+                    cout << "\tNome: " << livros[i].nome;
+                    cout << "\tCod.Editora: " << livros[i].codigo_editora;
+                    cout << "\tCod. Autor: " << livros[i].codigo_autor;
+                    cout << "\tCod. Genero: " << livros[i].codigo_genero;
+                    cout << "\tCod. Pessoa: " << livros[i].codigo_pessoa_emprestado;
+                    cout << "\tQtd Emprestada: " << livros[i].qtde_emprestada;
+                    cout << "\tData Ultm Emp.: " << livros[i].data_ultimo_emprestimo.dia << "/" << livros[i].data_ultimo_emprestimo.mes << "/" << livros[i].data_ultimo_emprestimo.ano << "\n";
+                }
+
+                return;
+            } else {
+                std::cout << "Livro já está emprestado." << std::endl;
+                return;
+            }
+        }
+    }
+
+    std::cout << "Livro não encontrado." << std::endl;
+}
+
+
 
 int main()
 {
@@ -558,8 +499,11 @@ int main()
     int opcao;
     int contPessoaS, contPessoaT, contPessoaA;
     int contLivroS, contLivroT, contLivroA;
+    int codigoDoLivroQueSeraEmprestado;
+    int codigoDaPessoaQueVaiEmprestar;
 
-    do{
+    do
+    {
         cout << "Selecione uma opcao:\n";
         cout << "1 - Realizar Leitura das Estruturas \n";
         cout << "2 - Incluir novo registro na tabela de pessoas \n";
@@ -570,7 +514,8 @@ int main()
         cout << "7- Mostrar Dados do Livro mais e menos emprestado\n";
         cout << "0- Encerrar\n";
         cin >> opcao;
-        switch(opcao){
+        switch(opcao)
+        {
         case 1:
             cout << "Voce escolheu realizar leitura das estruturas \n";
 
@@ -604,16 +549,19 @@ int main()
             cout << "\n\nLeitura do Arquivo T de Livros";
             leituraDeLivros(vLivroT, vEditoras, vAutores, vGeneros);
 
-            inclusaoEmLivros(vLivroS, vLivroT, vLivroA, 3, 3 , 6);
+            inclusaoEmLivros(vLivroS, vLivroT, vLivroA, 3, 3, 6);
 
             break;
         case 4:
             cout << "Voce escolheu realizar emprestimo de livro \n";
-            realizaEmprestimoLivro(vLivroA, vEditoras, vAutores, vPessoaA);
+            cout << "Digite o codigo do livro que voce deseja emprestar: ";
+            cin >> codigoDoLivroQueSeraEmprestado;
+            cout << "Digite o codigo da pessoa que vai emprestar esse livro: ";
+            cin >> codigoDaPessoaQueVaiEmprestar;
+            realizarEmprestimo(vLivroA, codigoDaPessoaQueVaiEmprestar, codigoDoLivroQueSeraEmprestado);
             break;
         case 5:
             cout << "Voce escolheu realizar devolucao de livro \n";
-            realizaDevolucaoLivro(vLivroA, vEditoras, vAutores, vPessoaA);
             break;
         case 6:
             cout << "Voce escolheu mostrar todos os livros emprestados \n";
@@ -628,6 +576,7 @@ int main()
             cout << "Opcao Invalida. Tente novamente. \n";
             break;
         }
-    } while(opcao != 0);
+    }
+    while(opcao != 0);
     return 0;
 }
