@@ -391,6 +391,8 @@ Pessoas buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
     else
     {
         cout << "\n\n Pessoa nao encontrada!" << "\n";
+        Pessoas pessoaInvalida;
+        return pessoaInvalida;
     }
 }
 
@@ -565,10 +567,15 @@ void mostraLivrosEmprestados(Livros* vLivro, Pessoas* vPessoa){
             cout << "\tCod. Pessoa: " << vLivro[i].codigo_pessoa_emprestado;
             cout << "\tQtd Emprestada: " << vLivro[i].qtde_emprestada;
             cout << "\tData Ultm Emp.: " << vLivro[i].data_ultimo_emprestimo.dia << "/" << vLivro[i].data_ultimo_emprestimo.mes << "/" << vLivro[i].data_ultimo_emprestimo.ano << "\n";
-            if(vLivro[i].codigo_pessoa_emprestado != 0)
-                buscaNaTabelaDePessoa(vPessoa, vLivro[i].codigo_pessoa_emprestado);
-            else
-                cout << "\nEsse Livro nao foi emprestado por nenhuma pessoa! \n";
+
+            Pessoas pessoaEmprestada = buscaNaTabelaDePessoa(vPessoa, vLivro[i].codigo_pessoa_emprestado);
+            if(pessoaEmprestada.codigo != -1){
+                cout << "\nNome da Pessoa: " << pessoaEmprestada.nome << "\n";
+                cout << "\tEndereco: " << pessoaEmprestada.endereco << "\n";
+            }
+            else{
+                cout << "\nEsse livro nao foi emprestado por nenhuma pessoa!\n";
+            }
             quantidadeDeLivrosEmprestados++;
         }
     }
