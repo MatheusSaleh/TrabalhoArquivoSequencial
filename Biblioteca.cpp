@@ -466,7 +466,7 @@ void realizarEmprestimo(Livros* livros, int codigoPessoa, int codigoLivro, Edito
                 livros[i].data_ultimo_emprestimo.mes = localTime->tm_mon + 1;
                 livros[i].data_ultimo_emprestimo.ano = localTime->tm_year + 1900;
 
-                std::cout << "Emprestimo realizado com sucesso!" << std::endl;
+                cout << "Emprestimo realizado com sucesso!" << std::endl;
 
                 cout << "\n\n LISTA DE LIVRO DEPOIS DO EMPRESTIMO\n";
                 for(int i = 0; i < 6; i++)
@@ -541,6 +541,67 @@ void realizaDevolucaoLivro(Livros* vLivro, int codigoLivro, Editoras* vEditora, 
     }
 }
 
+void mostraLivrosEmprestados(Livros* vLivro, Pessoas* vPessoa){
+    int quantidadeDeLivrosEmprestados = 0;
+    cout << "\n\n LIVROS EMPRESTADOS\n";
+    for(int i = 0; i < 6; i++){
+        if(vLivro[i].codigo_pessoa_emprestado != 0){
+            cout << "\nCod.: " << vLivro[i].codigo;
+            cout << "\tNome: " << vLivro[i].nome;
+            cout << "\tCod.Editora: " << vLivro[i].codigo_editora;
+            cout << "\tCod. Autor: " << vLivro[i].codigo_autor;
+            cout << "\tCod. Genero: " << vLivro[i].codigo_genero;
+            cout << "\tCod. Pessoa: " << vLivro[i].codigo_pessoa_emprestado;
+            cout << "\tQtd Emprestada: " << vLivro[i].qtde_emprestada;
+            cout << "\tData Ultm Emp.: " << vLivro[i].data_ultimo_emprestimo.dia << "/" << vLivro[i].data_ultimo_emprestimo.mes << "/" << vLivro[i].data_ultimo_emprestimo.ano << "\n";
+            if(vLivro[i].codigo_pessoa_emprestado != 0)
+                buscaNaTabelaDePessoa(vPessoa, vLivro[i].codigo_pessoa_emprestado);
+            else
+                cout << "\nEsse Livro nao foi emprestado por nenhuma pessoa! \n";
+            quantidadeDeLivrosEmprestados++;
+        }
+    }
+    cout << "\nHa um total de " << quantidadeDeLivrosEmprestados << " livros disponiveis para emprestimo \n";
+}
+
+void mostraLivroMaisMenosEmprestado(Livros* vLivro, Editoras* vEditora, Autores* vAutor){
+    Livros livroMaisEmprestado = vLivro[0];
+    Livros livroMenosEmprestado = vLivro[0];
+    for(int i = 0; i < sizeof(vLivro); i++){
+        if(vLivro[i].qtde_emprestada > livroMaisEmprestado.qtde_emprestada)
+            livroMaisEmprestado = vLivro[i];
+        if(vLivro[i].qtde_emprestada < livroMenosEmprestado.qtde_emprestada)
+            livroMenosEmprestado = vLivro[i];
+    }
+
+    cout << "\n\nINFORMACOES DO LIVRO MENOS EMPRESTADO \n";
+    cout << "\nCod.: " << livroMenosEmprestado.codigo;
+    cout << "\tNome: " << livroMenosEmprestado.nome;
+    cout << "\tCod. Editora: " << livroMenosEmprestado.codigo_editora;
+    cout << "\tCod. Autor: " << livroMenosEmprestado.codigo_autor;
+    cout << "\tCod. Genero: " << livroMenosEmprestado.codigo_genero;
+    cout << "\tCod. Pessoa: " << livroMenosEmprestado.codigo_pessoa_emprestado;
+    cout << "\tQtd Emprestada: " << livroMenosEmprestado.qtde_emprestada;
+    cout << "\tData Ultm Emp.: " << livroMenosEmprestado.data_ultimo_emprestimo.dia << "/" << livroMenosEmprestado.data_ultimo_emprestimo.mes << "/" << livroMenosEmprestado.data_ultimo_emprestimo.ano << "\n";
+    buscaNaTabelaDeEditoras(vEditora, livroMenosEmprestado.codigo_editora);
+    buscaNaTabelaDeAutores(vAutor, livroMenosEmprestado.codigo_autor);
+
+
+    cout << "\n\nINFORMACOES DO LIVRO MAIS EMPRESTADO \n";
+    cout << "\nCod.: " << livroMaisEmprestado.codigo;
+    cout << "\tNome: " << livroMaisEmprestado.nome;
+    cout << "\tCod. Editora: " << livroMaisEmprestado.codigo_editora;
+    cout << "\tCod. Autor: " << livroMaisEmprestado.codigo_autor;
+    cout << "\tCod. Genero: " << livroMaisEmprestado.codigo_genero;
+    cout << "\tCod. Pessoa: " << livroMaisEmprestado.codigo_pessoa_emprestado;
+    cout << "\tQtd Emprestada: " << livroMaisEmprestado.qtde_emprestada;
+    cout << "\tData Ultm Emp.: " << livroMaisEmprestado.data_ultimo_emprestimo.dia << "/" << livroMaisEmprestado.data_ultimo_emprestimo.mes << "/" << livroMaisEmprestado.data_ultimo_emprestimo.ano << "\n";
+    buscaNaTabelaDeEditoras(vEditora, livroMaisEmprestado.codigo_editora);
+    buscaNaTabelaDeAutores(vAutor, livroMaisEmprestado.codigo_autor);
+}
+
+
+
 int main()
 {
     Pessoas vPessoaS[3], vPessoaT[3], vPessoaA[6];
@@ -565,6 +626,7 @@ int main()
         cout << "5- Realizar Devolucao de Livro\n";
         cout << "6- Mostrar todos os livros emprestados\n";
         cout << "7- Mostrar Dados do Livro mais e menos emprestado\n";
+        cout << "8- Mostrar livros com devolucao em atraso\n";
         cout << "0- Encerrar\n";
         cin >> opcao;
         switch(opcao)
@@ -621,9 +683,14 @@ int main()
             break;
         case 6:
             cout << "Voce escolheu mostrar todos os livros emprestados \n";
+            mostraLivrosEmprestados(vLivroA, vPessoaA);
             break;
         case 7:
             cout << "Voce escolheu mostrar dados dos livros mais e menos emprestados \n";
+            mostraLivroMaisMenosEmprestado(vLivroA, vEditoras, vAutores);
+            break;
+        case 8:
+            cout << "Voce escolheu mostrar os livros com devolucao em atraso \n";
             break;
         case 0:
             cout << "Encerrando o programa...\n";
