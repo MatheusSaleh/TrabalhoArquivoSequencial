@@ -485,7 +485,18 @@ void realizarEmprestimo(Livros* livros, int codigoPessoa, int codigoLivro, Edito
             }
             else
             {
-                cout << "Livro já está emprestado." << endl;
+                cout << "O Livro já está emprestado." << endl;
+
+                struct tm dueDate = {0};
+                dueDate.tm_mday = livros[i].data_ultimo_emprestimo.dia + 5;
+                dueDate.tm_mon = livros[i].data_ultimo_emprestimo.mes - 1;
+                dueDate.tm_year = livros[i].data_ultimo_emprestimo.ano - 1900;
+
+                time_t dueTime = mktime(&dueDate);
+                tm* localDueTime = localtime(&dueTime);
+
+                cout << "O livro estara disponivel novamente em: " << localDueTime->tm_mday << "/" << localDueTime->tm_mon + 1 << "/" << localDueTime->tm_year + 1900 << endl;
+
                 return;
             }
         }
