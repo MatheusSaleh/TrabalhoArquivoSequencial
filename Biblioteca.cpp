@@ -585,7 +585,7 @@ void mostraLivrosEmprestados(Livros* vLivro, Pessoas* vPessoa){
 void mostraLivroMaisMenosEmprestado(Livros* vLivro, Editoras* vEditora, Autores* vAutor){
     Livros livroMaisEmprestado = vLivro[0];
     Livros livroMenosEmprestado = vLivro[0];
-    for(int i = 0; i < sizeof(vLivro); i++){
+    for(int i = 0; i < 6; i++){
         if(vLivro[i].qtde_emprestada > livroMaisEmprestado.qtde_emprestada)
             livroMaisEmprestado = vLivro[i];
         if(vLivro[i].qtde_emprestada < livroMenosEmprestado.qtde_emprestada)
@@ -618,6 +618,54 @@ void mostraLivroMaisMenosEmprestado(Livros* vLivro, Editoras* vEditora, Autores*
     buscaNaTabelaDeAutores(vAutor, livroMaisEmprestado.codigo_autor);
 }
 
+int diferencaDias(Data data1, Data data2)
+{
+    std::tm tm1 = { 0 };
+    tm1.tm_year = data1.ano - 1900;
+    tm1.tm_mon = data1.mes - 1;
+    tm1.tm_mday = data1.dia;
+
+    std::tm tm2 = { 0 };
+    tm2.tm_year = data2.ano - 1900;
+    tm2.tm_mon = data2.mes - 1;
+    tm2.tm_mday = data2.dia;
+
+    std::time_t time1 = std::mktime(&tm1);
+    std::time_t time2 = std::mktime(&tm2);
+
+    const int secondsPerDay = 60 * 60 * 24;
+    int diffDays = (time2 - time1) / secondsPerDay;
+
+    return diffDays;
+}
+
+void mostrarLivrosAtrasados(Livros* vLivro, int quantidadeDeLivros, Editoras* vEditora, Autores* vAutor){
+    time_t now;
+    time(&now);
+    struct tm* data = localtime(&now);
+
+    Data dataAtual;
+    dataAtual.dia = data->tm_mday;
+    dataAtual.mes = data->tm_mon + 1;
+    dataAtual.ano = data->tm_year + 1900;
+
+    cout << "\nLIVROS EM ATRASO\n";
+    for(int i = 0; i < quantidadeDeLivros; i++){
+        if(vLivro[i].codigo_pessoa_emprestado != 0 && diferencaDias(vLivro[i].data_ultimo_emprestimo, dataAtual) > 5){
+            cout << "\nCod.:" << vLivro[i].codigo;
+            cout << "\tNome: " << vLivro[i].nome;
+            cout << "\tCod. Editora: " << vLivro[i].codigo_editora;
+            cout << "\tCod. Autor: " << vLivro[i].codigo_autor;
+            cout << "\tCod. Genero: " << vLivro[i].codigo_genero;
+            cout << "\tCod. Pessoa: " << vLivro[i].codigo_pessoa_emprestado;
+            cout << "\tQtd Emprestada: " << vLivro[i].qtde_emprestada;
+            cout << "\tDias em atraso: " << diferencaDias(vLivro[i].data_ultimo_emprestimo, dataAtual);
+            cout << "\tData Ultm Emp.: " << vLivro[i].data_ultimo_emprestimo.dia << "/" << vLivro[i].data_ultimo_emprestimo.mes << "/" << vLivro[i].data_ultimo_emprestimo.ano << "\n";
+            buscaNaTabelaDeEditoras(vEditora, vLivro[i].codigo_editora);
+            buscaNaTabelaDeAutores(vAutor, vLivro[i].codigo_autor);
+        }
+    }
+}
 
 
 int main()
@@ -709,6 +757,7 @@ int main()
             break;
         case 8:
             cout << "Voce escolheu mostrar os livros com devolucao em atraso \n";
+            mostrarLivrosAtrasados(vLivroA, 6, vEditoras, vAutores);
             break;
         case 0:
             cout << "Encerrando o programa...\n";
