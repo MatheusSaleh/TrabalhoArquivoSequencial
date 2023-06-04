@@ -341,9 +341,9 @@ Generos buscaNaTabelaDeGenero(Generos vGenero[], int cod)
     }
 }
 
-Livros buscaNaTabelaDeLivro(Livros vLivro[], int cod)
+Livros buscaNaTabelaDeLivro(Livros vLivro[], int cod, int fimDaLista)
 {
-    int i = 0, f = 3;
+    int i = 0, f = fimDaLista;
     int m = (i + f) / 2;
     for(; f >= i && cod != vLivro[m].codigo; m = (i + f ) / 2)
     {
@@ -370,9 +370,9 @@ Livros buscaNaTabelaDeLivro(Livros vLivro[], int cod)
     }
 }
 
-Pessoas buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod)
+Pessoas buscaNaTabelaDePessoa(Pessoas vPessoa[], int cod, int fimDaLista)
 {
-    int i = 0, f = 3;
+    int i = 0, f = fimDaLista;
     int m = (i + f) / 2;
     for(; f >= i && cod != vPessoa[m].codigo; m = (i+f) / 2)
     {
@@ -449,7 +449,7 @@ void leituraDeLivros(Livros vetLivro[], Editoras vEditora[], Autores vAutor[], G
 
 void realizarEmprestimo(Livros* livros, int codigoPessoa, int codigoLivro, Editoras* vEditora, Autores* vAutores)
 {
-    Livros livroQueVaiSerEmprestado = buscaNaTabelaDeLivro(livros, codigoLivro);
+    Livros livroQueVaiSerEmprestado = buscaNaTabelaDeLivro(livros, codigoLivro, 5);
     buscaNaTabelaDeEditoras(vEditora, livroQueVaiSerEmprestado.codigo_editora);
     buscaNaTabelaDeAutores(vAutores, livroQueVaiSerEmprestado.codigo_autor);
     for (int i = 0; i < 6; i++)
@@ -487,7 +487,7 @@ void realizarEmprestimo(Livros* livros, int codigoPessoa, int codigoLivro, Edito
             }
             else
             {
-                cout << "O Livro já está emprestado." << endl;
+                cout << "O Livro ja esta emprestado." << endl;
 
                 struct tm dueDate = {0};
                 dueDate.tm_mday = livros[i].data_ultimo_emprestimo.dia + 5;
@@ -504,38 +504,47 @@ void realizarEmprestimo(Livros* livros, int codigoPessoa, int codigoLivro, Edito
         }
     }
 
-    std::cout << "Livro não encontrado." << std::endl;
+    cout << "Livro não encontrado." << std::endl;
 }
 
 void realizaDevolucaoLivro(Livros* vLivro, int codigoLivro, Editoras* vEditora, Autores* vAutor, Pessoas* vPessoa)
 {
     int usuarioConfirmaDevolver;
-    Livros livroQueVaiSerDevolvido = buscaNaTabelaDeLivro(vLivro, codigoLivro);
+    Livros livroQueVaiSerDevolvido = buscaNaTabelaDeLivro(vLivro, codigoLivro, 5);
+
+    if (livroQueVaiSerDevolvido.codigo == 0)
+    {
+        cout << "Livro nao encontrado\n";
+        return;
+    }
+
     buscaNaTabelaDeEditoras(vEditora, livroQueVaiSerDevolvido.codigo_editora);
     buscaNaTabelaDeAutores(vAutor, livroQueVaiSerDevolvido.codigo_autor);
-    for(int i = 0; i < 6; i++)
+
+    for (int i = 0; i < 6; i++)
     {
-        if(vLivro[i].codigo == codigoLivro)
+        if (vLivro[i].codigo == codigoLivro)
         {
-            if(vLivro[i].codigo_pessoa_emprestado != 0)
+            if (vLivro[i].codigo_pessoa_emprestado != 0)
             {
-                buscaNaTabelaDePessoa(vPessoa, vLivro[i].codigo_pessoa_emprestado);
+                buscaNaTabelaDePessoa(vPessoa, vLivro[i].codigo_pessoa_emprestado, 5);
                 cout << "\nVoce Confirma a Devolucao do Livro ? (1 Para Sim/0 Para Nao): ";
                 cin >> usuarioConfirmaDevolver;
-                if(usuarioConfirmaDevolver == 1)
+                if (usuarioConfirmaDevolver == 1)
                 {
                     vLivro[i].codigo_pessoa_emprestado = 0;
                     cout << "\nDevolucao Confirmada com sucesso!\n";
                     cout << "\n\nLISTA DE LIVROS DEPOIS DA DEVOLUCAO";
-                    for(int i = 0; i < 6; i++){
-                        cout << "\nCod.: " << vLivro[i].codigo;
-                        cout << "\tNome.: " << vLivro[i].nome;
-                        cout << "\tCod.Editora: " << vLivro[i].codigo_editora;
-                        cout << "\tCod.Autor: " << vLivro[i].codigo_autor;
-                        cout << "\tCod. Genero: " << vLivro[i].codigo_genero;
-                        cout << "\tCod. Pessoa: " << vLivro[i].codigo_pessoa_emprestado;
-                        cout << "\tQtde Emprestada " << vLivro[i].qtde_emprestada;
-                        cout << "\tData Ultm Emp.: " << vLivro[i].data_ultimo_emprestimo.dia << "/" << vLivro[i].data_ultimo_emprestimo.mes << "/" << vLivro[i].data_ultimo_emprestimo.ano << "\n";
+                    for (int j = 0; j < 6; j++)
+                    {
+                        cout << "\nCod.: " << vLivro[j].codigo;
+                        cout << "\tNome.: " << vLivro[j].nome;
+                        cout << "\tCod.Editora: " << vLivro[j].codigo_editora;
+                        cout << "\tCod.Autor: " << vLivro[j].codigo_autor;
+                        cout << "\tCod. Genero: " << vLivro[j].codigo_genero;
+                        cout << "\tCod. Pessoa: " << vLivro[j].codigo_pessoa_emprestado;
+                        cout << "\tQtde Emprestada " << vLivro[j].qtde_emprestada;
+                        cout << "\tData Ultm Emp.: " << vLivro[j].data_ultimo_emprestimo.dia << "/" << vLivro[j].data_ultimo_emprestimo.mes << "/" << vLivro[j].data_ultimo_emprestimo.ano << "\n";
                     }
                     return;
                 }
@@ -545,17 +554,20 @@ void realizaDevolucaoLivro(Livros* vLivro, int codigoLivro, Editoras* vEditora, 
                     return;
                 }
             }
-        }
-        else
-        {
-            cout << "Nao e possivel devolver um livro que nao esta emprestado" << endl;
-            return;
+            else
+            {
+                cout << "Nao e possivel devolver um livro que nao esta emprestado" << endl;
+                return;
+            }
         }
     }
+    cout << "Livro nao encontrado\n";
 }
+
 
 void mostraLivrosEmprestados(Livros* vLivro, Pessoas* vPessoa){
     int quantidadeDeLivrosEmprestados = 0;
+    int quantidadeDeLivrosDisponiveisParaEmprestimo = 0;
     cout << "\n\n LIVROS EMPRESTADOS\n";
     for(int i = 0; i < 6; i++){
         if(vLivro[i].codigo_pessoa_emprestado != 0){
@@ -568,7 +580,7 @@ void mostraLivrosEmprestados(Livros* vLivro, Pessoas* vPessoa){
             cout << "\tQtd Emprestada: " << vLivro[i].qtde_emprestada;
             cout << "\tData Ultm Emp.: " << vLivro[i].data_ultimo_emprestimo.dia << "/" << vLivro[i].data_ultimo_emprestimo.mes << "/" << vLivro[i].data_ultimo_emprestimo.ano << "\n";
 
-            Pessoas pessoaEmprestada = buscaNaTabelaDePessoa(vPessoa, vLivro[i].codigo_pessoa_emprestado);
+            Pessoas pessoaEmprestada = buscaNaTabelaDePessoa(vPessoa, vLivro[i].codigo_pessoa_emprestado, 5);
             if(pessoaEmprestada.codigo != -1){
                 cout << "\nNome da Pessoa: " << pessoaEmprestada.nome << "\n";
                 cout << "\tEndereco: " << pessoaEmprestada.endereco << "\n";
@@ -577,9 +589,12 @@ void mostraLivrosEmprestados(Livros* vLivro, Pessoas* vPessoa){
                 cout << "\nEsse livro nao foi emprestado por nenhuma pessoa!\n";
             }
             quantidadeDeLivrosEmprestados++;
+        } else{
+            quantidadeDeLivrosDisponiveisParaEmprestimo++;
         }
     }
-    cout << "\nHa um total de " << quantidadeDeLivrosEmprestados << " livros disponiveis para emprestimo \n";
+    cout << "\nHa um total de " << quantidadeDeLivrosEmprestados << " livros emprestados \n";
+    cout << "\nHa um total de " << quantidadeDeLivrosDisponiveisParaEmprestimo << " disponiveis para emprestimo \n";
 }
 
 void mostraLivroMaisMenosEmprestado(Livros* vLivro, Editoras* vEditora, Autores* vAutor){
@@ -618,51 +633,32 @@ void mostraLivroMaisMenosEmprestado(Livros* vLivro, Editoras* vEditora, Autores*
     buscaNaTabelaDeAutores(vAutor, livroMaisEmprestado.codigo_autor);
 }
 
-int diferencaDias(Data data1, Data data2)
-{
-    std::tm tm1 = { 0 };
-    tm1.tm_year = data1.ano - 1900;
-    tm1.tm_mon = data1.mes - 1;
-    tm1.tm_mday = data1.dia;
+Data obterDataAtual(){
+    time_t tempoAtual = time(nullptr);
+    tm* dataAtual = localtime(&tempoAtual);
 
-    std::tm tm2 = { 0 };
-    tm2.tm_year = data2.ano - 1900;
-    tm2.tm_mon = data2.mes - 1;
-    tm2.tm_mday = data2.dia;
+    Data data;
+    data.dia = dataAtual->tm_mday;
+    data.mes = dataAtual->tm_mon + 1;
+    data.ano = dataAtual->tm_year + 1900;
 
-    std::time_t time1 = std::mktime(&tm1);
-    std::time_t time2 = std::mktime(&tm2);
-
-    const int secondsPerDay = 60 * 60 * 24;
-    int diffDays = (time2 - time1) / secondsPerDay;
-
-    return diffDays;
+    return data;
 }
 
-void mostrarLivrosAtrasados(Livros* vLivro, int quantidadeDeLivros, Editoras* vEditora, Autores* vAutor){
-    time_t now;
-    time(&now);
-    struct tm* data = localtime(&now);
+void mostrarLivrosEmAtraso(Livros* livros, int tamanho, Data dataAtual, Editoras* vEditora, Autores* vAutores){
+    for(int i = 0; i < tamanho; i++){
+        if(livros[i].codigo_pessoa_emprestado != 0){
+            int diferencaDias = (dataAtual.ano - livros[i].data_ultimo_emprestimo.ano) * 365
+            + (dataAtual.mes - livros[i].data_ultimo_emprestimo.mes) * 30
+            + (dataAtual.dia - livros[i].data_ultimo_emprestimo.dia);
 
-    Data dataAtual;
-    dataAtual.dia = data->tm_mday;
-    dataAtual.mes = data->tm_mon + 1;
-    dataAtual.ano = data->tm_year + 1900;
-
-    cout << "\nLIVROS EM ATRASO\n";
-    for(int i = 0; i < quantidadeDeLivros; i++){
-        if(vLivro[i].codigo_pessoa_emprestado != 0 && diferencaDias(vLivro[i].data_ultimo_emprestimo, dataAtual) > 5){
-            cout << "\nCod.:" << vLivro[i].codigo;
-            cout << "\tNome: " << vLivro[i].nome;
-            cout << "\tCod. Editora: " << vLivro[i].codigo_editora;
-            cout << "\tCod. Autor: " << vLivro[i].codigo_autor;
-            cout << "\tCod. Genero: " << vLivro[i].codigo_genero;
-            cout << "\tCod. Pessoa: " << vLivro[i].codigo_pessoa_emprestado;
-            cout << "\tQtd Emprestada: " << vLivro[i].qtde_emprestada;
-            cout << "\tDias em atraso: " << diferencaDias(vLivro[i].data_ultimo_emprestimo, dataAtual);
-            cout << "\tData Ultm Emp.: " << vLivro[i].data_ultimo_emprestimo.dia << "/" << vLivro[i].data_ultimo_emprestimo.mes << "/" << vLivro[i].data_ultimo_emprestimo.ano << "\n";
-            buscaNaTabelaDeEditoras(vEditora, vLivro[i].codigo_editora);
-            buscaNaTabelaDeAutores(vAutor, vLivro[i].codigo_autor);
+            if(diferencaDias > 5){
+                cout << "Livro em atraso: " << livros[i].nome << endl;
+                cout << "Data do ultimo emprestimo: " << livros[i].data_ultimo_emprestimo.dia << "/" << livros[i].data_ultimo_emprestimo.mes << "/" << livros[i].data_ultimo_emprestimo.ano << "\n";
+                cout << "Dias em Atraso: " << diferencaDias << "\n";
+                buscaNaTabelaDeEditoras(vEditora, livros[i].codigo_editora);
+                buscaNaTabelaDeAutores(vAutores, livros[i].codigo_autor);
+            }
         }
     }
 }
@@ -681,6 +677,7 @@ int main()
     int codigoDoLivroQueSeraEmprestado;
     int codigoDaPessoaQueVaiEmprestar;
     int codigoDoLivroQueVaiSerDevolvido;
+    Data dataAtual;
 
     do
     {
@@ -757,7 +754,8 @@ int main()
             break;
         case 8:
             cout << "Voce escolheu mostrar os livros com devolucao em atraso \n";
-            mostrarLivrosAtrasados(vLivroA, 6, vEditoras, vAutores);
+            dataAtual = obterDataAtual();
+            mostrarLivrosEmAtraso(vLivroA, 6, dataAtual, vEditoras, vAutores);
             break;
         case 0:
             cout << "Encerrando o programa...\n";
