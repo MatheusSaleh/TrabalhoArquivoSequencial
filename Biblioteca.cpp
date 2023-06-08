@@ -679,6 +679,7 @@ int main()
     int codigoDoLivroQueVaiSerDevolvido;
     Data dataAtual;
 
+
     do
     {
         cout << "Selecione uma opcao:\n";
@@ -755,7 +756,7 @@ int main()
         case 8:
             cout << "Voce escolheu mostrar os livros com devolucao em atraso \n";
             dataAtual = obterDataAtual();
-            mostrarLivrosEmAtraso(vLivroA, 6, dataAtual, vEditoras, vAutores);
+            mostrarLivrosEmAtraso(vLivroA, 5, dataAtual, vEditoras, vAutores);
             break;
         case 0:
             cout << "Encerrando o programa...\n";
